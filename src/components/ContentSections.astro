@@ -29,6 +29,9 @@ const renderedSections = await Promise.all(
   })),
 );
 
+const isConsulProfile = (id: string) =>
+  id === "consular-services/02-consul" || id.endsWith("/02-consul");
+
 const iconMap = {
   map: Map,
   users: Users,
@@ -71,6 +74,31 @@ const iconMap = {
           <div class="prose">
             <section.Content />
           </div>
+
+          {isConsulProfile(section.id) && (
+            <aside class="consul-profile" aria-label="Honorary Consul profile">
+              <p class="consul-profile__label">Profile</p>
+              <dl>
+                <div>
+                  <dt>Role</dt>
+                  <dd>
+                    First Honorary Consul for Auckland and the North Island
+                  </dd>
+                </div>
+                <div>
+                  <dt>Appointment</dt>
+                  <dd>Five-year voluntary appointment</dd>
+                </div>
+                <div>
+                  <dt>Authority</dt>
+                  <dd>Embassy of Timor-Leste in Wellington</dd>
+                </div>
+              </dl>
+              <a href="#contact">
+                Contact Dave <span aria-hidden="true">→</span>
+              </a>
+            </aside>
+          )}
 
           {section.data.facts && (
             <div class="fact-grid">
@@ -235,8 +263,60 @@ const iconMap = {
   .fact-grid,
   .service-grid,
   .timeline,
-  .stat-grid {
+  .stat-grid,
+  .consul-profile {
     grid-column: 1 / -1;
+  }
+
+  .consul-profile {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr auto;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    align-items: start;
+    border-top: 0.2rem solid var(--turmeric);
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .consul-profile__label,
+  .consul-profile dt {
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .consul-profile__label {
+    margin: 0;
+    color: var(--turmeric);
+  }
+
+  .consul-profile dl {
+    display: grid;
+    margin: 0;
+    gap: var(--space-2);
+  }
+
+  .consul-profile dl > div {
+    display: grid;
+    grid-template-columns: minmax(7rem, 0.4fr) 1fr;
+    gap: var(--space-2);
+  }
+
+  .consul-profile dt {
+    color: color-mix(in srgb, var(--undyed) 65%, transparent);
+  }
+
+  .consul-profile dd {
+    margin: 0;
+  }
+
+  .consul-profile a {
+    color: var(--turmeric);
+    font-weight: 500;
+    white-space: nowrap;
+    text-underline-offset: 0.25em;
   }
 
   .fact-grid,
@@ -358,6 +438,10 @@ const iconMap = {
   }
 
   @media (max-width: 52rem) {
+    .consul-profile {
+      grid-template-columns: 1fr;
+    }
+
     .content-section__inner {
       grid-template-columns: 1fr;
       gap: var(--space-4);
@@ -366,7 +450,8 @@ const iconMap = {
     .fact-grid,
     .service-grid,
     .timeline,
-    .stat-grid {
+    .stat-grid,
+    .consul-profile {
       grid-column: auto;
     }
 

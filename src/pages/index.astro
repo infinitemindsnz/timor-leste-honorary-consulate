@@ -4,8 +4,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ContentSections from "../components/ContentSections.astro";
 import SinglePageContact from "../components/SinglePageContact.astro";
 import TaisBand from "../components/TaisBand.astro";
-import { Picture } from "astro:assets";
-import diliCoast from "../assets/dili-coast-editorial.png";
 
 export const prerender = false;
 
@@ -62,16 +60,35 @@ const consularSections = sectionsFor("consular-services");
       </div>
 
       <figure class="hero__image">
-        <Picture
-          src={diliCoast}
-          formats={["avif", "webp"]}
-          fallbackFormat="jpg"
-          widths={[480, 720, 960]}
-          sizes="(max-width: 700px) 100vw, 25vw"
-          alt="Dili’s coastline curving beneath the mountains beside the Timor Sea"
-          loading="eager"
-          fetchpriority="high"
-        />
+        <picture>
+          <source
+            type="image/avif"
+            srcset="
+              /images/dili-coast-480.avif 480w,
+              /images/dili-coast-720.avif 720w,
+              /images/dili-coast-960.avif 960w
+            "
+            sizes="(max-width: 700px) 100vw, 25vw"
+          />
+          <source
+            type="image/webp"
+            srcset="
+              /images/dili-coast-480.webp 480w,
+              /images/dili-coast-720.webp 720w,
+              /images/dili-coast-960.webp 960w
+            "
+            sizes="(max-width: 700px) 100vw, 25vw"
+          />
+          <img
+            src="/images/dili-coast-editorial.jpg"
+            width="1568"
+            height="1003"
+            alt="Dili’s coastline curving beneath the mountains beside the Timor Sea"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
         <figcaption>Dili coast · Timor-Leste</figcaption>
       </figure>
     </div>
