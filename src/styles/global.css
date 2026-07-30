@@ -1,0 +1,143 @@
+@import "tailwindcss";
+@import "./fonts.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  color: var(--undyed);
+  font-family: var(--font-body);
+  font-size: 100%;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-width: 20rem;
+  margin: 0;
+  background: var(--ink);
+  color: var(--undyed);
+  font-size: var(--text-0);
+  line-height: var(--line-body);
+}
+
+main {
+  overflow: clip;
+}
+
+[id] {
+  scroll-margin-top: 7rem;
+}
+
+html.menu-open {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  border-radius: 0.125rem;
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+::selection {
+  background: var(--turmeric);
+  color: var(--ink);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  transform: translateY(-200%);
+  background: var(--turmeric);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.button {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 3rem;
+  padding-inline: var(--space-3);
+  align-items: center;
+  justify-content: center;
+  background: var(--morinda);
+  color: var(--undyed);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.button::after {
+  margin-left: var(--space-2);
+  content: "→";
+}
+
+.button:hover {
+  background: color-mix(in srgb, var(--morinda) 82%, var(--ink));
+}
+
+.button--light {
+  background: var(--undyed);
+  color: var(--ink);
+}
+
+.button--light:hover {
+  background: color-mix(in srgb, var(--undyed) 86%, var(--turmeric));
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--morinda);
+  font-family: var(--font-utility);
+  font-size: var(--text--1);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+}
+
+.container {
+  width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

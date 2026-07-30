@@ -1,0 +1,67 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle =
+  title === "Home"
+    ? "Honorary Consulate of Timor-Leste · Auckland & North Island"
+    : `${title} · Honorary Consulate of Timor-Leste`;
+
+const governmentOffice = {
+  "@context": "https://schema.org",
+  "@type": "GovernmentOffice",
+  name: "Honorary Consulate of the Democratic Republic of Timor-Leste",
+  areaServed: "Auckland and the North Island of New Zealand",
+  telephone: "+64 21 021 68888",
+  email: "dave.tlconsulhonorario@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "97 Great South Road",
+    addressLocality: "Epsom",
+    addressRegion: "Auckland",
+    addressCountry: "NZ",
+  },
+  url: canonical.origin,
+};
+---
+
+<!doctype html>
+<html lang="en-NZ">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#12141C" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Honorary Consulate of Timor-Leste" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/images/timor-leste-flag.png" type="image/png" />
+    <title>{fullTitle}</title>
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(governmentOffice)}
+    />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

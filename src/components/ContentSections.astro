@@ -1,0 +1,426 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import {
+  BriefcaseBusiness,
+  Coins,
+  GraduationCap,
+  Handshake,
+  HeartHandshake,
+  Languages,
+  Landmark,
+  Map,
+  Megaphone,
+  Sprout,
+  Users,
+  WavesHorizontal,
+} from "@lucide/astro";
+import TaisBand from "./TaisBand.astro";
+
+interface Props {
+  sections: CollectionEntry<"sections">[];
+}
+
+const { sections } = Astro.props;
+const renderedSections = await Promise.all(
+  sections.map(async (section) => ({
+    ...section,
+    Content: (await render(section)).Content,
+  })),
+);
+
+const iconMap = {
+  map: Map,
+  users: Users,
+  landmark: Landmark,
+  coins: Coins,
+  waves: WavesHorizontal,
+  handshake: Handshake,
+  languages: Languages,
+  sprout: Sprout,
+  graduation: GraduationCap,
+  briefcase: BriefcaseBusiness,
+  "heart-handshake": HeartHandshake,
+  megaphone: Megaphone,
+};
+---
+
+{
+  renderedSections.map((section) => (
+    <>
+      <TaisBand
+        pattern={section.data.pattern}
+        colors={["ink", "morinda", "turmeric", "undyed"]}
+        height={40}
+      />
+      <section
+        class:list={[
+          "content-section",
+          `content-section--${section.data.surface}`,
+        ]}
+      >
+        <div class="content-section__inner">
+          <header class="section-heading">
+            <p class="eyebrow">{section.data.eyebrow}</p>
+            <h2>{section.data.title}</h2>
+            {section.data.lede && (
+              <p class="section-lede">{section.data.lede}</p>
+            )}
+          </header>
+
+          <div class="prose">
+            <section.Content />
+          </div>
+
+          {section.data.facts && (
+            <div class="fact-grid">
+              {section.data.facts.map((fact) => {
+                const Icon = iconMap[fact.icon];
+                return (
+                  <article class="fact">
+                    <Icon size={24} stroke-width={1.6} aria-hidden="true" />
+                    <h3>{fact.title}</h3>
+                    <p>{fact.text}</p>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {section.data.timeline && (
+            <ol
+              class="timeline"
+              aria-label="Timor-Leste ASEAN membership timeline"
+            >
+              {section.data.timeline.map((item) => (
+                <li>
+                  <p class="timeline__date">{item.date}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {section.data.stats && (
+            <dl class="stat-grid">
+              {section.data.stats.map((stat) => (
+                <div>
+                  <dt>{stat.label}</dt>
+                  <dd>{stat.value}</dd>
+                  <p>{stat.asAt}</p>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {section.data.services && (
+            <div class="service-grid">
+              {section.data.services.map((service) => {
+                const Icon = iconMap[service.icon];
+                return (
+                  <article class="service">
+                    <Icon size={24} stroke-width={1.6} aria-hidden="true" />
+                    <h3>{service.title}</h3>
+                    <p>{service.text}</p>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  ))
+}
+
+<style>
+  .content-section {
+    color: var(--ink);
+  }
+
+  .content-section--undyed {
+    background: var(--undyed);
+  }
+
+  .content-section--light {
+    background: color-mix(in srgb, var(--undyed) 52%, white);
+  }
+
+  .content-section--indigo {
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .content-section__inner {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+    gap: var(--space-5) var(--space-7);
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    margin-inline: auto;
+    padding-block: var(--space-7);
+  }
+
+  .section-heading {
+    align-self: start;
+  }
+
+  .section-heading h2 {
+    max-width: 12ch;
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .section-lede {
+    max-width: 30rem;
+    margin: var(--space-3) 0 0;
+    color: var(--stone);
+    font-size: var(--text-1);
+  }
+
+  .content-section--indigo .eyebrow {
+    color: var(--turmeric);
+  }
+
+  .content-section--indigo .section-lede,
+  .content-section--indigo .prose :global(p),
+  .content-section--indigo .fact p,
+  .content-section--indigo .service p,
+  .content-section--indigo .timeline p {
+    color: color-mix(in srgb, var(--undyed) 80%, transparent);
+  }
+
+  .prose {
+    max-width: var(--content-narrow);
+  }
+
+  .prose :global(h3) {
+    margin: var(--space-5) 0 var(--space-1);
+    font-family: var(--font-display);
+    font-size: var(--text-2);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .prose :global(h3:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--space-3);
+    color: color-mix(in srgb, var(--ink) 82%, var(--stone));
+  }
+
+  .prose :global(strong) {
+    color: currentColor;
+    font-weight: 500;
+  }
+
+  .prose :global(blockquote) {
+    margin: var(--space-5) 0 0;
+    padding-left: var(--space-3);
+    border-left: 3px solid var(--turmeric);
+    font-family: var(--font-display);
+    font-size: var(--text-1);
+  }
+
+  .prose :global(blockquote p) {
+    color: inherit;
+  }
+
+  .fact-grid,
+  .service-grid,
+  .timeline,
+  .stat-grid {
+    grid-column: 1 / -1;
+  }
+
+  .fact-grid,
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-left: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .fact,
+  .service {
+    padding: var(--space-3);
+    border-right: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .fact svg,
+  .service svg {
+    color: var(--morinda);
+  }
+
+  .content-section--indigo .fact svg,
+  .content-section--indigo .service svg {
+    color: var(--turmeric);
+  }
+
+  .fact h3,
+  .service h3,
+  .timeline h3 {
+    margin: var(--space-2) 0 var(--space-1);
+    font-family: var(--font-display);
+    font-size: var(--text-1);
+    font-weight: 600;
+  }
+
+  .fact p,
+  .service p,
+  .timeline p {
+    margin: 0;
+    color: var(--stone);
+  }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    list-style: none;
+  }
+
+  .timeline li {
+    position: relative;
+    padding: var(--space-4) var(--space-3) 0 0;
+    border-top: 2px solid var(--turmeric);
+  }
+
+  .timeline li::before {
+    position: absolute;
+    top: -0.45rem;
+    left: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--turmeric);
+    border: 3px solid var(--indigo);
+    border-radius: 50%;
+    content: "";
+  }
+
+  .timeline__date {
+    color: var(--turmeric) !important;
+    font-family: var(--font-utility);
+    font-size: var(--text--1);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: var(--space-2) 0 0;
+  }
+
+  .stat-grid > div {
+    display: flex;
+    min-height: 12rem;
+    padding: var(--space-3);
+    flex-direction: column;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .stat-grid > div + div {
+    border-left: 0;
+  }
+
+  .stat-grid dt {
+    order: 2;
+    margin-top: auto;
+    font-size: var(--text--1);
+  }
+
+  .stat-grid dd {
+    order: 1;
+    margin: 0;
+    font-family: var(--font-utility);
+    font-size: var(--text-4);
+    line-height: 1;
+  }
+
+  .stat-grid p {
+    order: 3;
+    margin: var(--space-1) 0 0;
+    color: var(--stone);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 52rem) {
+    .content-section__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .fact-grid,
+    .service-grid,
+    .timeline,
+    .stat-grid {
+      grid-column: auto;
+    }
+
+    .stat-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-grid > div + div {
+      border-left: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    }
+
+    .stat-grid > div:nth-child(even) {
+      border-left: 0;
+    }
+
+    .stat-grid > div:nth-child(n + 3) {
+      border-top: 0;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .fact-grid,
+    .service-grid,
+    .timeline {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline {
+      padding-left: var(--space-3);
+      border-left: 2px solid var(--turmeric);
+    }
+
+    .timeline li {
+      padding: 0 0 var(--space-4) var(--space-3);
+      border-top: 0;
+    }
+
+    .timeline li::before {
+      top: 0.35rem;
+      left: calc(-1 * var(--space-3) - 0.43rem);
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .stat-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-grid > div:nth-child(n) {
+      border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    }
+
+    .stat-grid > div + div {
+      border-top: 0;
+    }
+  }
+</style>

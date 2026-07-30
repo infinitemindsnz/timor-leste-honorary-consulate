@@ -1,0 +1,171 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__accent" aria-hidden="true"></div>
+  <div class="site-footer__inner">
+    <div class="footer-identity">
+      <p class="footer-eyebrow">Repúblika Demokrátika Timor-Leste</p>
+      <p class="footer-title">
+        Honorary Consulate of the Democratic Republic of Timor-Leste
+      </p>
+      <p>Auckland &amp; North Island, New Zealand</p>
+    </div>
+
+    <div class="footer-contact">
+      <h2>Contact</h2>
+      <a href="tel:+642102168888">+64 21 021 68888</a>
+      <!-- TODO(client): replace Gmail with a verified domain address when available. -->
+      <a href="mailto:dave.tlconsulhonorario@gmail.com">
+        dave.tlconsulhonorario@gmail.com
+      </a>
+      <p>97 Great South Road, Epsom, Auckland</p>
+    </div>
+
+    <div class="footer-embassy">
+      <h2>Wellington Embassy</h2>
+      <p>Visas, passports and official consular documents</p>
+      <a href="tel:+6444711971">(04) 471 1971</a>
+      <a href="mailto:embassy.timorleste.nz@gmail.com">
+        embassy.timorleste.nz@gmail.com
+      </a>
+    </div>
+
+    <div class="footer-coordinates" aria-label="Dili and Auckland coordinates">
+      <span>8.5°S 125.7°E · Dili</span>
+      <span>36.8°S 174.7°E · Auckland</span>
+    </div>
+
+    <div class="footer-legal">
+      <!-- TODO(verify): confirm the intended copyright year with the Consulate. -->
+      <p>© {year} Honorary Consulate of Timor-Leste — Auckland</p>
+      <a href="#privacy">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .site-footer__accent {
+    height: 0.2rem;
+    background: var(--turmeric);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: var(--space-5);
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    margin-inline: auto;
+    padding-block: var(--space-7) var(--space-4);
+  }
+
+  .footer-identity,
+  .footer-contact,
+  .footer-embassy {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+  }
+
+  .footer-identity p,
+  .footer-contact p,
+  .footer-embassy p,
+  .footer-legal p {
+    margin: 0;
+  }
+
+  .footer-eyebrow,
+  .footer-coordinates,
+  .footer-legal {
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .footer-eyebrow {
+    color: var(--turmeric);
+  }
+
+  .footer-title {
+    max-width: 17ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 0.98;
+  }
+
+  .site-footer h2 {
+    margin: 0 0 var(--space-1);
+    color: var(--turmeric);
+    font-family: var(--font-utility);
+    font-size: var(--text--1);
+    font-weight: 400;
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .site-footer a {
+    width: fit-content;
+    text-underline-offset: 0.25em;
+  }
+
+  .footer-contact p,
+  .footer-embassy p {
+    color: color-mix(in srgb, var(--undyed) 72%, transparent);
+    font-size: var(--text--1);
+  }
+
+  .footer-coordinates,
+  .footer-legal {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid color-mix(in srgb, var(--undyed) 16%, transparent);
+  }
+
+  .footer-coordinates {
+    margin-top: var(--space-3);
+    color: var(--undyed);
+  }
+
+  .footer-legal {
+    color: color-mix(in srgb, var(--undyed) 65%, transparent);
+  }
+
+  @media (max-width: 52rem) {
+    .site-footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-identity {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .site-footer__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-identity {
+      grid-column: auto;
+    }
+
+    .footer-coordinates,
+    .footer-legal {
+      grid-column: auto;
+      flex-direction: column;
+    }
+  }
+</style>

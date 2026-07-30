@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The requested page could not be found."
+>
+  <section class="not-found">
+    <div class="container">
+      <p class="eyebrow">404 · Page not found</p>
+      <h1>This path does not lead where you expected.</h1>
+      <p>
+        Return home, explore Timor-Leste, or contact the Consulate directly.
+      </p>
+      <div class="actions">
+        <a class="button" href="/">Return home</a>
+        <a href="/#contact">Contact the Consulate</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: grid;
+    min-height: 60svh;
+    align-items: center;
+    padding-block: var(--space-7);
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .not-found .container {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--content-narrow);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .not-found p:not(.eyebrow) {
+    color: var(--stone);
+    font-size: var(--text-1);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .actions > a:not(.button) {
+    text-underline-offset: 0.25em;
+  }
+</style>

@@ -1,0 +1,141 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+}
+
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<header class="page-hero">
+  <div class="page-hero__inner">
+    <div class="page-hero__message">
+      <p class="page-hero__eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <span class="page-hero__rule" aria-hidden="true"></span>
+      <p class="page-hero__intro">{intro}</p>
+    </div>
+    <div
+      class="page-hero__coordinates"
+      aria-label="Dili and Auckland coordinates"
+    >
+      <span>8.5°S 125.7°E · Dili</span>
+      <span class="page-hero__connection" aria-hidden="true"></span>
+      <span>36.8°S 174.7°E · Auckland</span>
+    </div>
+  </div>
+</header>
+
+<style>
+  .page-hero {
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .page-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(17rem, 0.65fr);
+    min-height: 30rem;
+  }
+
+  .page-hero__message {
+    display: grid;
+    padding: var(--space-7) var(--page-gutter);
+    align-content: center;
+  }
+
+  .page-hero__eyebrow,
+  .page-hero__coordinates {
+    font-family: var(--font-utility);
+    font-size: var(--text--1);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .page-hero__eyebrow {
+    margin: 0;
+    color: var(--turmeric);
+  }
+
+  h1 {
+    max-width: 12ch;
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 7vw, 7rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.84;
+  }
+
+  .page-hero__rule {
+    width: 5rem;
+    height: 0.2rem;
+    margin-top: var(--space-3);
+    background: var(--turmeric);
+  }
+
+  .page-hero__intro {
+    max-width: var(--content-narrow);
+    margin: var(--space-3) 0 0;
+    color: color-mix(in srgb, var(--undyed) 82%, transparent);
+    font-size: var(--text-1);
+  }
+
+  .page-hero__coordinates {
+    display: grid;
+    padding: var(--space-5) var(--space-4);
+    align-content: center;
+    border-left: 1px solid var(--turmeric);
+    color: var(--turmeric);
+  }
+
+  .page-hero__connection {
+    width: 1px;
+    height: 6rem;
+    margin-block: var(--space-2);
+    margin-left: 0.4rem;
+    background: var(--turmeric);
+  }
+
+  @media (max-width: 52rem) {
+    .page-hero__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .page-hero__message {
+      padding-block: var(--space-6);
+    }
+
+    .page-hero__coordinates {
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-2);
+      padding-block: var(--space-3);
+      border-top: 1px solid var(--turmeric);
+      border-left: 0;
+    }
+
+    .page-hero__connection {
+      width: 3rem;
+      height: 1px;
+      margin: 0;
+      align-self: center;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    h1 {
+      font-size: clamp(3.5rem, 17vw, 5rem);
+    }
+
+    .page-hero__coordinates {
+      grid-template-columns: 1fr;
+    }
+
+    .page-hero__connection {
+      width: 1px;
+      height: 2rem;
+      margin-left: 0.4rem;
+    }
+  }
+</style>

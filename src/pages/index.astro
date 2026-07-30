@@ -1,0 +1,634 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContentSections from "../components/ContentSections.astro";
+import SinglePageContact from "../components/SinglePageContact.astro";
+import TaisBand from "../components/TaisBand.astro";
+import { Picture } from "astro:assets";
+import diliCoast from "../assets/dili-coast-editorial.png";
+
+export const prerender = false;
+
+const status = Astro.url.searchParams.get("status");
+const allSections = await getCollection("sections");
+const sectionsFor = (page: string) =>
+  allSections
+    .filter((section) => section.data.page === page)
+    .sort((a, b) => a.data.order - b.data.order);
+
+const timorLesteSections = sectionsFor("timor-leste");
+const opportunitySections = sectionsFor("opportunity");
+const consularSections = sectionsFor("consular-services");
+---
+
+<BaseLayout
+  title="Home"
+  description="The Honorary Consulate of the Democratic Republic of Timor-Leste for Auckland and the North Island of New Zealand."
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__grid">
+      <div class="hero__message">
+        <p class="hero__eyebrow">
+          Honorary Consulate · Auckland &amp; North Island
+        </p>
+        <h1 id="hero-title">
+          Two nations.<br />
+          One enduring<br />
+          relationship.
+        </h1>
+        <span class="hero__rule" aria-hidden="true"></span>
+        <p class="hero__lede">
+          We foster cooperation, strengthen friendships and create opportunities
+          that endure — between our nations and our people.
+        </p>
+        <div class="hero__actions">
+          <a class="button" href="#contact">Contact the Consulate</a>
+          <a class="button button--outline" href="#consular-services">
+            Consular guidance
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__coordinates" aria-label="Dili and Auckland coordinates">
+        <div>
+          <span class="hero__coordinate">8.5°S 125.7°E · Dili</span>
+          <span>Democratic Republic<br />of Timor-Leste</span>
+        </div>
+        <span class="hero__connection" aria-hidden="true"></span>
+        <div>
+          <span class="hero__coordinate">36.8°S 174.7°E · Auckland</span>
+          <span>New Zealand<br />Auckland &amp; North Island</span>
+        </div>
+      </div>
+
+      <figure class="hero__image">
+        <Picture
+          src={diliCoast}
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          widths={[480, 720, 960]}
+          sizes="(max-width: 700px) 100vw, 25vw"
+          alt="Dili’s coastline curving beneath the mountains beside the Timor Sea"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption>Dili coast · Timor-Leste</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <TaisBand
+    pattern="diamond"
+    colors={["ink", "morinda", "turmeric", "undyed"]}
+    height={44}
+    animate
+  />
+
+  <section class="doorways" aria-labelledby="doorways-title">
+    <div class="container">
+      <h2 class="visually-hidden" id="doorways-title">Begin here</h2>
+
+      <div class="doorway-list">
+        <a class="doorway" href="#consular-services">
+          <span class="doorway__rule" aria-hidden="true"></span>
+          <h3>Assistance for<br />Timorese nationals</h3>
+          <p>
+            Find support, referrals and the right diplomatic contact for your
+            enquiry.
+          </p>
+          <span class="doorway__action"
+            >View services <span aria-hidden="true">→</span></span
+          >
+        </a>
+
+        <a class="doorway" href="#opportunity">
+          <span class="doorway__rule" aria-hidden="true"></span>
+          <h3>Trade and<br />investment</h3>
+          <p>
+            Explore thoughtful partnerships between New Zealand experience and
+            Timor-Leste’s next chapter.
+          </p>
+          <span class="doorway__action"
+            >Explore opportunities <span aria-hidden="true">→</span></span
+          >
+        </a>
+
+        <a class="doorway" href="#timor-leste">
+          <span class="doorway__rule" aria-hidden="true"></span>
+          <h3>Discover<br />Timor-Leste</h3>
+          <p>
+            Meet a young democracy shaped by courage, many languages and living
+            traditions.
+          </p>
+          <span class="doorway__action"
+            >Explore the nation <span aria-hidden="true">→</span></span
+          >
+        </a>
+      </div>
+
+      <aside class="embassy-referral" aria-labelledby="embassy-title">
+        <p class="embassy-referral__coordinates">
+          8.5°S 125.7°E · Dili <span aria-hidden="true">/</span> 36.8°S 174.7°E ·
+          Auckland
+        </p>
+        <div>
+          <h2 id="embassy-title">Wellington Embassy</h2>
+          <p>
+            Visas, passports and official documents are handled by the Embassy
+            of Timor-Leste in Wellington.
+          </p>
+        </div>
+        <a href="tel:+6444711971">
+          Call (04) 471 1971 <span aria-hidden="true">→</span>
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="relationship" aria-labelledby="relationship-title">
+    <div class="container relationship__inner">
+      <p class="eyebrow">DILI · AUCKLAND</p>
+      <h2 id="relationship-title">Two points, one relationship.</h2>
+      <div>
+        <p>
+          The Honorary Consulate connects Timor-Leste with Auckland and the
+          North Island — supporting Timorese nationals, strengthening cultural
+          ties, and opening thoughtful pathways for New Zealand businesses and
+          investors.
+        </p>
+        <a href="#contact">
+          Start a conversation <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div id="timor-leste" class="chapter">
+    <header class="chapter-heading">
+      <div class="container chapter-heading__inner">
+        <p class="eyebrow">BEM-VINDO / Welcome</p>
+        <h2>Timor-Leste</h2>
+        <p>
+          A young democracy with an ancient cultural inheritance — shaped by
+          courage, community and a profound joy in being free.
+        </p>
+      </div>
+    </header>
+    <ContentSections sections={timorLesteSections} />
+  </div>
+
+  <div id="opportunity" class="chapter">
+    <header class="chapter-heading chapter-heading--light">
+      <div class="container chapter-heading__inner">
+        <p class="eyebrow">PARCERIA / Partnership</p>
+        <h2>A rare window, now open</h2>
+        <p>
+          ASEAN membership gives Timor-Leste a stronger regional platform. New
+          Zealand experience can contribute where relationships are built with
+          patience and trust.
+        </p>
+      </div>
+    </header>
+    <ContentSections sections={opportunitySections} />
+  </div>
+
+  <div id="consular-services" class="chapter">
+    <header class="chapter-heading">
+      <div class="container chapter-heading__inner">
+        <p class="eyebrow">AJUDA / Guidance</p>
+        <h2>Consular services</h2>
+        <p>
+          A first point of contact for Timorese nationals, and a bridge between
+          Timor-Leste and communities across Auckland and the North Island.
+        </p>
+      </div>
+    </header>
+    <ContentSections sections={consularSections} />
+  </div>
+
+  <SinglePageContact {status} />
+</BaseLayout>
+
+<style>
+  .hero {
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .hero__grid {
+    display: grid;
+    min-height: min(47rem, calc(100svh - 7rem));
+    grid-template-columns: minmax(0, 2.2fr) minmax(16rem, 0.58fr) minmax(
+        17rem,
+        0.72fr
+      );
+    border-bottom: 1px solid color-mix(in srgb, var(--undyed) 14%, transparent);
+  }
+
+  .hero__message {
+    display: grid;
+    padding: clamp(var(--space-5), 7vw, var(--space-8)) var(--page-gutter)
+      var(--space-6);
+    align-content: center;
+    animation: title-enter 600ms ease-out 420ms both;
+  }
+
+  .hero__eyebrow,
+  .hero__coordinates,
+  .hero__image figcaption {
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .hero__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--turmeric);
+  }
+
+  h1 {
+    max-width: 13ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(4.2rem, 6vw, 6.6rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.8;
+  }
+
+  .hero__rule {
+    width: 5.5rem;
+    height: 0.2rem;
+    margin-block: var(--space-4) var(--space-3);
+    background: var(--turmeric);
+  }
+
+  .hero__lede {
+    max-width: 38rem;
+    margin: 0;
+    color: color-mix(in srgb, var(--undyed) 86%, transparent);
+    font-size: var(--text-0);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .hero__actions .button {
+    min-width: 13.5rem;
+  }
+
+  .button--outline {
+    border: 1px solid color-mix(in srgb, var(--undyed) 68%, transparent);
+    background: transparent;
+  }
+
+  .button--outline:hover {
+    border-color: var(--turmeric);
+    background: transparent;
+    color: var(--turmeric);
+  }
+
+  .hero__coordinates {
+    display: grid;
+    padding: var(--space-5) var(--space-4);
+    align-content: center;
+    border-left: 1px solid var(--turmeric);
+    color: color-mix(in srgb, var(--undyed) 78%, transparent);
+    animation: coordinates-enter 500ms ease-out 720ms both;
+  }
+
+  .hero__coordinates > div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .hero__coordinate {
+    color: var(--turmeric);
+    font-size: var(--text--1);
+  }
+
+  .hero__connection {
+    width: 1px;
+    height: clamp(5rem, 14vh, 9rem);
+    margin-block: var(--space-2);
+    margin-left: 0.4rem;
+    background: var(--turmeric);
+  }
+
+  .hero__image {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .hero__image :global(picture),
+  .hero__image :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__image :global(img) {
+    object-fit: cover;
+    object-position: 60% center;
+  }
+
+  .hero__image figcaption {
+    position: absolute;
+    right: var(--space-2);
+    bottom: var(--space-2);
+    padding: 0.25rem 0.5rem;
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  @keyframes title-enter {
+    from {
+      transform: translateY(1.5rem);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes coordinates-enter {
+    from {
+      transform: translateX(1rem);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .doorways {
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .doorway-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .doorway {
+    display: grid;
+    min-width: 0;
+    padding: var(--space-5) var(--space-4);
+    align-content: start;
+    border-right: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
+    text-decoration: none;
+  }
+
+  .doorway:last-child {
+    border-right: 0;
+  }
+
+  .doorway__rule {
+    width: 6rem;
+    height: 0.15rem;
+    margin-bottom: var(--space-2);
+    background: var(--turmeric);
+  }
+
+  .doorway h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 0.96;
+  }
+
+  .doorway p {
+    margin: var(--space-2) 0;
+    color: var(--stone);
+  }
+
+  .doorway__action {
+    margin-top: auto;
+    color: var(--morinda);
+    font-size: var(--text--1);
+    font-weight: 500;
+  }
+
+  .doorway:hover h3,
+  .doorway:focus-visible h3 {
+    color: var(--morinda);
+  }
+
+  .embassy-referral {
+    display: grid;
+    grid-template-columns: 1.05fr 1.5fr auto;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-2);
+    align-items: center;
+    border-top: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
+  }
+
+  .embassy-referral h2,
+  .embassy-referral p {
+    margin: 0;
+  }
+
+  .embassy-referral h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-1);
+    font-weight: 600;
+  }
+
+  .embassy-referral p {
+    color: var(--stone);
+    font-size: var(--text--1);
+  }
+
+  .embassy-referral__coordinates {
+    font-family: var(--font-utility);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .embassy-referral a {
+    color: var(--morinda);
+    font-size: var(--text--1);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .relationship {
+    padding-block: var(--space-7);
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .relationship__inner {
+    display: grid;
+    grid-template-columns: 0.55fr 1fr 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .relationship .eyebrow {
+    color: var(--turmeric);
+  }
+
+  .relationship h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .relationship p {
+    margin: 0 0 var(--space-2);
+    color: color-mix(in srgb, var(--undyed) 82%, transparent);
+  }
+
+  .relationship a {
+    color: var(--turmeric);
+    font-weight: 500;
+    text-underline-offset: 0.25em;
+  }
+
+  .chapter-heading {
+    padding-block: var(--space-7);
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .chapter-heading--light {
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .chapter-heading__inner {
+    display: grid;
+    grid-template-columns: 0.55fr 1fr 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .chapter-heading h2 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .chapter-heading__inner > p:last-child {
+    margin: 0;
+    color: color-mix(in srgb, currentColor 78%, transparent);
+    font-size: var(--text-1);
+  }
+
+  .chapter-heading:not(.chapter-heading--light) .eyebrow {
+    color: var(--turmeric);
+  }
+
+  @media (max-width: 70rem) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.65fr);
+    }
+
+    .hero__image {
+      display: none;
+    }
+
+    h1 {
+      font-size: clamp(4rem, 8.5vw, 7rem);
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .hero__grid {
+      min-height: auto;
+      grid-template-columns: 1fr;
+    }
+
+    .hero__message {
+      padding-block: var(--space-6);
+    }
+
+    .hero__coordinates {
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-2);
+      padding-block: var(--space-3);
+      border-top: 1px solid var(--turmeric);
+      border-left: 0;
+    }
+
+    .hero__connection {
+      width: clamp(2rem, 8vw, 4rem);
+      height: 1px;
+      margin: 0;
+      align-self: center;
+    }
+
+    .doorway-list {
+      grid-template-columns: 1fr;
+    }
+
+    .doorway {
+      border-right: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
+    }
+
+    .embassy-referral,
+    .chapter-heading__inner,
+    .relationship__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    h1 {
+      font-size: clamp(3.5rem, 17vw, 5rem);
+    }
+
+    .hero__actions {
+      flex-direction: column;
+    }
+
+    .hero__actions .button {
+      width: 100%;
+    }
+
+    .hero__coordinates {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__connection {
+      width: 1px;
+      height: 2rem;
+      margin-left: 0.4rem;
+    }
+
+    .doorway {
+      padding-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__message,
+    .hero__coordinates {
+      animation: none;
+    }
+  }
+</style>

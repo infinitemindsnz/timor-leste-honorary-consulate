@@ -1,0 +1,335 @@
+---
+import { Mail, MapPin, MessageCircle, Phone } from "@lucide/astro";
+import EnquiryForm from "./EnquiryForm.astro";
+import TaisBand from "./TaisBand.astro";
+
+interface Props {
+  status: string | null;
+}
+
+const { status } = Astro.props;
+---
+
+<section id="contact" class="contact-intro" aria-labelledby="contact-title">
+  <div class="container contact-intro__inner">
+    <p class="eyebrow">KONTAKTU / Contact</p>
+    <h2 id="contact-title">Reach the Consulate</h2>
+    <p>
+      Support, referrals and relationship-building across Auckland and the North
+      Island.
+    </p>
+  </div>
+</section>
+
+<div>
+  <section class="urgent" aria-labelledby="urgent-title">
+    <div class="container urgent__inner">
+      <div>
+        <p class="eyebrow">Urgent assistance</p>
+        <h2 id="urgent-title">Timorese national in difficulty?</h2>
+      </div>
+      <div>
+        <p>Call the Honorary Consul directly.</p>
+        <a class="urgent__phone" href="tel:+642102168888">
+          <Phone size={24} aria-hidden="true" />
+          +64 21 021 68888
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <TaisBand
+    pattern="morinda-stripe"
+    colors={["ink", "morinda", "turmeric", "undyed"]}
+    height={40}
+  />
+
+  <EnquiryForm {status} />
+
+  <section class="contact-details">
+    <div class="container contact-grid">
+      <article>
+        <Mail size={24} aria-hidden="true" />
+        <h2>Email</h2>
+        <a href="mailto:dave.tlconsulhonorario@gmail.com">
+          dave.tlconsulhonorario@gmail.com
+        </a>
+      </article>
+      <article>
+        <MessageCircle size={24} aria-hidden="true" />
+        <h2>WhatsApp</h2>
+        <a href="https://wa.me/64210216888">Message the Consulate</a>
+      </article>
+      <article>
+        <MapPin size={24} aria-hidden="true" />
+        <h2>Address</h2>
+        <p>97 Great South Road, Epsom, Auckland</p>
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=97+Great+South+Road+Epsom+Auckland"
+        >
+          Open in Google Maps
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact-notes">
+    <div class="container contact-notes__inner">
+      <article>
+        <p class="eyebrow">Jurisdiction</p>
+        <h2>Auckland and the North Island</h2>
+        <p>
+          The Honorary Consulate covers Auckland and the North Island north of
+          Wellington. Visits are by arrangement, reflecting the voluntary nature
+          of the appointment.
+        </p>
+      </article>
+      <article class="embassy-card">
+        <p class="eyebrow">Wellington Embassy</p>
+        <h2>Visas, passports and official documents</h2>
+        <p>These services are not handled by the Honorary Consulate.</p>
+        <a href="tel:+6444711971">(04) 471 1971</a>
+        <a href="mailto:embassy.timorleste.nz@gmail.com">
+          embassy.timorleste.nz@gmail.com
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <section id="privacy" class="privacy" aria-labelledby="privacy-title">
+    <div class="container privacy__inner">
+      <header>
+        <p class="eyebrow">PRIVASIDADE / Privacy</p>
+        <h2 id="privacy-title">Your information</h2>
+        <p class="draft">Draft — review required before publication</p>
+      </header>
+      <div>
+        <h3>Information the Consulate may collect</h3>
+        <p>
+          When the online enquiry service is introduced, the Consulate may
+          collect the contact information and message details you choose to
+          provide.
+        </p>
+        <h3>How information will be used</h3>
+        <p>
+          Information will be used to respond to your enquiry, make an
+          appropriate referral, and maintain necessary records. It will not be
+          used for unrelated marketing.
+        </p>
+        <h3>Access and correction</h3>
+        <p>
+          Under the New Zealand Privacy Act 2020, you may ask to access or
+          correct personal information held about you. Final contact and
+          retention details must be confirmed with the Consulate before launch.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .contact-intro {
+    padding-block: var(--space-7);
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .contact-intro__inner {
+    display: grid;
+    grid-template-columns: 0.55fr 1fr 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .contact-intro h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .contact-intro__inner > p:last-child {
+    margin: 0;
+    color: color-mix(in srgb, var(--undyed) 78%, transparent);
+    font-size: var(--text-1);
+  }
+
+  .urgent {
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .urgent__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    align-items: center;
+  }
+
+  .urgent h2,
+  .contact-details h2,
+  .contact-notes h2 {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .urgent p {
+    margin: 0 0 var(--space-2);
+    color: color-mix(in srgb, var(--undyed) 80%, transparent);
+  }
+
+  .urgent__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--turmeric);
+    font-family: var(--font-display);
+    font-size: var(--text-2);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+  }
+
+  .contact-details {
+    padding-block: var(--space-6);
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid color-mix(in srgb, var(--stone) 40%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--stone) 40%, transparent);
+  }
+
+  .contact-grid article {
+    padding: var(--space-4);
+    border-right: 1px solid color-mix(in srgb, var(--stone) 40%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--stone) 40%, transparent);
+  }
+
+  .contact-grid svg {
+    color: var(--morinda);
+  }
+
+  .contact-grid article:first-child {
+    border-top: 0.2rem solid var(--turmeric);
+  }
+
+  .contact-grid p {
+    margin: var(--space-2) 0;
+    color: var(--stone);
+  }
+
+  .contact-grid a {
+    display: block;
+    width: fit-content;
+    margin-top: var(--space-2);
+    overflow-wrap: anywhere;
+    text-underline-offset: 0.25em;
+  }
+
+  .contact-notes {
+    padding-block: var(--space-7);
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .contact-notes__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+
+  .contact-notes article > p:not(.eyebrow) {
+    color: var(--stone);
+  }
+
+  .embassy-card {
+    padding: var(--space-4);
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .embassy-card .eyebrow {
+    color: var(--turmeric);
+  }
+
+  .embassy-card > p:not(.eyebrow) {
+    color: color-mix(in srgb, var(--undyed) 78%, transparent) !important;
+  }
+
+  .embassy-card a {
+    display: block;
+    width: fit-content;
+    margin-top: var(--space-1);
+    text-underline-offset: 0.25em;
+  }
+
+  .privacy {
+    padding-block: var(--space-7);
+    background: color-mix(in srgb, var(--undyed) 52%, white);
+    color: var(--ink);
+  }
+
+  .privacy__inner {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+    gap: var(--space-7);
+  }
+
+  .privacy h2,
+  .privacy h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .privacy h2 {
+    margin: var(--space-1) 0 var(--space-3);
+    font-size: var(--text-3);
+  }
+
+  .privacy h3 {
+    margin: var(--space-4) 0 var(--space-1);
+    font-size: var(--text-1);
+  }
+
+  .privacy h3:first-child {
+    margin-top: 0;
+  }
+
+  .privacy p {
+    color: var(--stone);
+  }
+
+  .draft {
+    width: fit-content;
+    padding: var(--space-1) var(--space-2);
+    background: var(--turmeric);
+    color: var(--ink) !important;
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 48rem) {
+    .contact-intro__inner,
+    .urgent__inner,
+    .contact-notes__inner,
+    .privacy__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

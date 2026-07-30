@@ -1,0 +1,388 @@
+---
+const navItems = [
+  { href: "#timor-leste", label: "Timor-Leste" },
+  { href: "#opportunity", label: "Opportunity" },
+  { href: "#consular-services", label: "Consular Services" },
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a
+      class="wordmark"
+      href="#top"
+      aria-label="Honorary Consulate of Timor-Leste, home"
+    >
+      <img src="/images/timor-leste-flag.png" width="89" height="50" alt="" />
+      <span class="wordmark__copy">
+        <span class="wordmark__primary">
+          Honorary Consulate of the Democratic Republic of Timor-Leste
+        </span>
+        <span class="wordmark__secondary">
+          Auckland &amp; North Island, New Zealand
+        </span>
+      </span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+        <li>
+          <a class="contact-link" href="#contact"> Contact </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-controls="site-menu"
+      aria-expanded="false"
+    >
+      <span>Menu</span>
+      <span class="menu-button__mark" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <dialog id="site-menu" class="mobile-menu" aria-label="Site navigation">
+    <div class="mobile-menu__top">
+      <span class="mobile-menu__eyebrow">Navigation</span>
+      <button class="menu-close" type="button">Close</button>
+    </div>
+    <nav aria-label="Mobile navigation">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+        <li><a href="#contact">Contact the Consulate</a></li>
+      </ul>
+    </nav>
+    <p class="mobile-menu__coordinates">8.5°S 125.7°E · 36.8°S 174.7°E</p>
+  </dialog>
+</header>
+
+<script>
+  const menu = document.querySelector<HTMLDialogElement>("#site-menu");
+  const openButton = document.querySelector<HTMLButtonElement>(".menu-button");
+  const closeButton = document.querySelector<HTMLButtonElement>(".menu-close");
+
+  if (menu && openButton && closeButton) {
+    const closeMenu = () => {
+      menu.close();
+      openButton.setAttribute("aria-expanded", "false");
+      document.documentElement.classList.remove("menu-open");
+      openButton.focus();
+    };
+
+    openButton.addEventListener("click", () => {
+      menu.showModal();
+      openButton.setAttribute("aria-expanded", "true");
+      document.documentElement.classList.add("menu-open");
+      closeButton.focus();
+    });
+
+    closeButton.addEventListener("click", closeMenu);
+    menu.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeMenu();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) {
+        event.preventDefault();
+        closeMenu();
+      }
+    });
+
+    menu.addEventListener("click", (event) => {
+      if (event.target === menu) closeMenu();
+    });
+
+    menu.querySelectorAll<HTMLAnchorElement>("a[href^='#']").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.close();
+        openButton.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("menu-open");
+      });
+    });
+  }
+
+  const sectionLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(
+      ".desktop-nav a[href^='#']:not([href='#top'])",
+    ),
+  );
+  const sections = sectionLinks
+    .map((link) => document.querySelector<HTMLElement>(link.hash))
+    .filter((section): section is HTMLElement => section !== null);
+
+  if ("IntersectionObserver" in window && sections.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+
+        sectionLinks.forEach((link) => {
+          const active = link.hash === `#${visible.target.id}`;
+          if (active) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+        });
+      },
+      { rootMargin: "-22% 0px -62% 0px", threshold: [0, 0.2, 0.6] },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    background: var(--ink);
+    color: var(--undyed);
+    border-bottom: 1px solid color-mix(in srgb, var(--undyed) 14%, transparent);
+  }
+
+  .site-header__inner {
+    display: flex;
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    min-height: 7rem;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .wordmark {
+    display: flex;
+    max-width: 34rem;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+  }
+
+  .wordmark img {
+    width: 4.75rem;
+    height: auto;
+    flex: none;
+  }
+
+  .wordmark__copy {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .wordmark__primary {
+    font-family: var(--font-display);
+    font-size: var(--text-1);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.02;
+  }
+
+  .wordmark__secondary {
+    color: var(--turmeric);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .desktop-nav ul,
+  .mobile-menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-2), 2vw, var(--space-4));
+  }
+
+  .desktop-nav a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    font-size: var(--text--1);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .desktop-nav a:not(.contact-link) {
+    border-bottom: 2px solid transparent;
+  }
+
+  .desktop-nav a:not(.contact-link):hover,
+  .desktop-nav a:not(.contact-link)[aria-current="location"] {
+    border-bottom-color: var(--turmeric);
+  }
+
+  .contact-link {
+    min-width: 6rem;
+    padding-inline: var(--space-2);
+    justify-content: center;
+    border: 1px solid var(--turmeric);
+    color: var(--turmeric);
+  }
+
+  .contact-link:hover {
+    background: var(--turmeric);
+    color: var(--ink);
+  }
+
+  .menu-button {
+    display: none;
+    min-height: 2.75rem;
+    padding: 0;
+    align-items: center;
+    gap: var(--space-1);
+    border: 0;
+    background: transparent;
+    color: var(--undyed);
+    font: inherit;
+    font-size: var(--text--1);
+  }
+
+  .menu-button__mark {
+    width: 1.5rem;
+    height: 0.75rem;
+    border-block: 2px solid currentColor;
+  }
+
+  .mobile-menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    padding: var(--page-gutter);
+    margin: 0;
+    border: 0;
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .mobile-menu::backdrop {
+    background: var(--ink);
+  }
+
+  .mobile-menu[open] {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    animation: menu-enter 240ms ease-out both;
+  }
+
+  .mobile-menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-menu__eyebrow,
+  .mobile-menu__coordinates {
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .menu-close {
+    min-width: 3.5rem;
+    min-height: 2.75rem;
+    border: 1px solid color-mix(in srgb, var(--undyed) 45%, transparent);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  .mobile-menu nav {
+    display: grid;
+    align-content: center;
+  }
+
+  .mobile-menu li {
+    border-bottom: 1px solid color-mix(in srgb, var(--undyed) 18%, transparent);
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding-block: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-3);
+    font-weight: 600;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .mobile-menu a[aria-current="location"] {
+    color: var(--turmeric);
+  }
+
+  .mobile-menu__coordinates {
+    color: color-mix(in srgb, var(--undyed) 70%, transparent);
+  }
+
+  @keyframes menu-enter {
+    from {
+      transform: translateX(100%);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 64rem) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .menu-button {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .site-header__inner {
+      min-height: 5.75rem;
+    }
+
+    .wordmark {
+      gap: var(--space-1);
+    }
+
+    .wordmark img {
+      width: 3.6rem;
+    }
+
+    .wordmark__primary {
+      max-width: 15rem;
+      font-size: var(--text--1);
+    }
+
+    .wordmark__secondary {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu[open] {
+      animation: none;
+    }
+  }
+</style>

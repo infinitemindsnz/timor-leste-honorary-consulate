@@ -1,0 +1,259 @@
+---
+type Pattern =
+  "chevron" | "diamond" | "stepped-lozenge" | "zigzag" | "morinda-stripe";
+
+type ColorToken =
+  "ink" | "indigo" | "morinda" | "turmeric" | "undyed" | "stone";
+
+interface Props {
+  pattern: Pattern;
+  colors?: ColorToken[];
+  height?: number;
+  animate?: boolean;
+}
+
+const {
+  pattern,
+  colors = ["ink", "morinda", "turmeric", "undyed"],
+  height = 48,
+  animate = false,
+} = Astro.props;
+
+const allowedColors: ColorToken[] = [
+  "ink",
+  "indigo",
+  "morinda",
+  "turmeric",
+  "undyed",
+  "stone",
+];
+
+const safeColors = colors
+  .filter((color): color is ColorToken => allowedColors.includes(color))
+  .slice(0, 4);
+
+while (safeColors.length < 4) {
+  safeColors.push(
+    ["ink", "morinda", "turmeric", "undyed"][safeColors.length] as ColorToken,
+  );
+}
+
+const instanceId = crypto.randomUUID().replaceAll("-", "");
+const patternId = `tais-pattern-${instanceId}`;
+const maskId = `tais-mask-${instanceId}`;
+const color = (index: number) => `var(--${safeColors[index]})`;
+---
+
+<div
+  class:list={["tais", { "tais--animated": animate }]}
+  style={`--tais-height: ${height}px`}
+  aria-hidden="true"
+>
+  <svg
+    viewBox="0 0 1200 32"
+    width="100%"
+    height={height}
+    preserveAspectRatio="none"
+    focusable="false"
+  >
+    <defs>
+      {
+        pattern === "chevron" && (
+          <pattern
+            id={patternId}
+            width="64"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="64" height="32" fill={color(0)} />
+            <path
+              d="M-16 32 16 0 48 32 80 0"
+              fill="none"
+              stroke={color(1)}
+              stroke-width="10"
+            />
+            <path
+              d="M-16 32 16 0 48 32 80 0"
+              fill="none"
+              stroke={color(2)}
+              stroke-width="3"
+            />
+            <path
+              d="M0 32 16 16 32 32M32 0 48 16 64 0"
+              fill="none"
+              stroke={color(3)}
+              stroke-width="2"
+            />
+          </pattern>
+        )
+      }
+
+      {
+        pattern === "diamond" && (
+          <pattern
+            id={patternId}
+            width="48"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="48" height="32" fill={color(1)} />
+            <path d="M0 16 24 0 48 16 24 32Z" fill={color(0)} />
+            <path
+              d="M8 16 24 5 40 16 24 27Z"
+              fill="none"
+              stroke={color(2)}
+              stroke-width="4"
+            />
+            <path d="M18 16 24 11 30 16 24 21Z" fill={color(3)} />
+          </pattern>
+        )
+      }
+
+      {
+        pattern === "stepped-lozenge" && (
+          <pattern
+            id={patternId}
+            width="64"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="64" height="32" fill={color(0)} />
+            <path
+              d="M0 12H8V8h8V4h16v4h8v4h8v8h-8v4h-8v4H16v-4H8v-4H0ZM48 12h8V8h8v16h-8v-4h-8Z"
+              fill={color(2)}
+            />
+            <path d="M8 14h8v-4h16v4h8v4h-8v4H16v-4H8Z" fill={color(1)} />
+            <rect x="22" y="13" width="8" height="6" fill={color(3)} />
+          </pattern>
+        )
+      }
+
+      {
+        pattern === "zigzag" && (
+          <pattern
+            id={patternId}
+            width="48"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="48" height="32" fill={color(2)} />
+            <path
+              d="M-12 25 0 7l12 18L24 7l12 18L48 7l12 18"
+              fill="none"
+              stroke={color(0)}
+              stroke-width="12"
+              stroke-linejoin="miter"
+            />
+            <path
+              d="M-12 25 0 7l12 18L24 7l12 18L48 7l12 18"
+              fill="none"
+              stroke={color(3)}
+              stroke-width="3"
+              stroke-linejoin="miter"
+            />
+            <path
+              d="M0 0v32M24 0v32M48 0v32"
+              stroke={color(1)}
+              stroke-width="2"
+            />
+          </pattern>
+        )
+      }
+
+      {
+        pattern === "morinda-stripe" && (
+          <pattern
+            id={patternId}
+            width="64"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="64" height="32" fill={color(1)} />
+            <rect x="0" width="7" height="32" fill={color(0)} />
+            <rect x="9" width="3" height="32" fill={color(2)} />
+            <rect x="16" width="32" height="32" fill={color(0)} />
+            <rect x="52" width="3" height="32" fill={color(2)} />
+            <rect x="57" width="7" height="32" fill={color(0)} />
+            <path
+              d="M16 16 24 8l8 8 8-8 8 8-8 8-8-8-8 8Z"
+              fill="none"
+              stroke={color(3)}
+              stroke-width="2"
+            />
+            <rect x="30" y="14" width="4" height="4" fill={color(2)} />
+          </pattern>
+        )
+      }
+
+      {
+        animate && (
+          <mask id={maskId}>
+            <line
+              class="tais__reveal"
+              x1="0"
+              y1="16"
+              x2="1200"
+              y2="16"
+              pathLength="1"
+              stroke="white"
+              stroke-width="32"
+              stroke-linecap="butt"
+            />
+          </mask>
+        )
+      }
+    </defs>
+
+    <rect
+      class="tais__pattern"
+      width="1200"
+      height="32"
+      fill={`url(#${patternId})`}
+      mask={animate ? `url(#${maskId})` : undefined}></rect>
+    <path
+      class="tais__thread"
+      d="M0 1H1200M0 31H1200"
+      stroke={color(3)}
+      stroke-width="1"
+      opacity="0.55"></path>
+  </svg>
+</div>
+
+<style>
+  .tais {
+    width: 100%;
+    height: var(--tais-height);
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .tais svg {
+    display: block;
+  }
+
+  .tais__reveal {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .tais--animated .tais__reveal {
+    animation: weave-in 1.2s ease-out both;
+  }
+
+  @keyframes weave-in {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tais--animated .tais__reveal {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

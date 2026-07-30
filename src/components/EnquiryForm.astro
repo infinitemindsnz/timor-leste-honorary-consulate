@@ -1,0 +1,630 @@
+---
+import { enquiryTypeDetails } from "../lib/enquiry";
+
+interface Props {
+  status?: string | null;
+}
+
+const { status } = Astro.props;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const startedAt = Date.now();
+const enquiryTypes = Object.entries(enquiryTypeDetails);
+---
+
+<section class="enquiry" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container enquiry__grid">
+    <header class="enquiry__intro">
+      <p class="eyebrow">HAHU IHA NE’E / Begin here</p>
+      <h2 id="enquiry-title">Send an enquiry</h2>
+      <p>
+        Tell us what you need and your message will be routed appropriately. The
+        Consulate aims to reply within five working days.
+      </p>
+      <div class="enquiry__direct">
+        <p>Prefer to contact the Consulate directly?</p>
+        <a href="tel:+642102168888">+64 21 021 68888</a>
+        <a href="mailto:dave.tlconsulhonorario@gmail.com">
+          dave.tlconsulhonorario@gmail.com
+        </a>
+      </div>
+    </header>
+
+    <div class="enquiry__form-wrap">
+      {
+        status === "success" ? (
+          <div class="form-outcome form-outcome--success" role="status">
+            <p class="eyebrow">OBRIGADU BARAK / Thank you</p>
+            <h3>Your message has been received.</h3>
+            <p>
+              The Consulate will reply as soon as possible. Visa, passport and
+              official document matters should be directed to the Wellington
+              Embassy on <a href="tel:+6444711971">(04) 471 1971</a>.
+            </p>
+          </div>
+        ) : (
+          <>
+            {status && (
+              <div class="form-outcome form-outcome--error" role="alert">
+                <h3>The message was not sent.</h3>
+                <p>
+                  Check the form and try again. If the problem continues, call
+                  or email the Consulate directly.
+                </p>
+              </div>
+            )}
+
+            <form method="post" action="/api/enquiry" data-enquiry-form>
+              <input
+                type="hidden"
+                name="formStartedAt"
+                value={startedAt}
+                data-started-at
+              />
+
+              <div class="honeypot" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  tabindex="-1"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="field-grid">
+                <div class="field">
+                  <label for="name">
+                    Name <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    minlength="2"
+                    maxlength="120"
+                    required
+                    aria-describedby="name-error"
+                  />
+                  <p
+                    class="field-error"
+                    id="name-error"
+                    data-error-for="name"
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="email">
+                    Email <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="254"
+                    required
+                    aria-describedby="email-error"
+                  />
+                  <p
+                    class="field-error"
+                    id="email-error"
+                    data-error-for="email"
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="phone">
+                    Phone <span>Optional</span>
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                    maxlength="40"
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="countryLocation">
+                    Country or location <span aria-hidden="true">*</span>
+                  </label>
+                  <select
+                    id="countryLocation"
+                    name="countryLocation"
+                    required
+                    aria-describedby="countryLocation-error"
+                  >
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Timor-Leste">Timor-Leste</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Other">Another location</option>
+                  </select>
+                  <p
+                    class="field-error"
+                    id="countryLocation-error"
+                    data-error-for="countryLocation"
+                  />
+                </div>
+              </div>
+
+              <fieldset class="enquiry-types">
+                <legend>
+                  Enquiry type <span aria-hidden="true">*</span>
+                </legend>
+                {enquiryTypes.map(([value, details], index) => (
+                  <label>
+                    <input
+                      type="radio"
+                      name="enquiryType"
+                      value={value}
+                      required
+                      checked={index === 0}
+                    />
+                    <span>{details.label}</span>
+                  </label>
+                ))}
+                <p
+                  class="field-error"
+                  id="enquiryType-error"
+                  data-error-for="enquiryType"
+                />
+              </fieldset>
+
+              <div class="field">
+                <label for="subject">
+                  Subject <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  minlength="3"
+                  maxlength="160"
+                  required
+                  aria-describedby="subject-error"
+                />
+                <p
+                  class="field-error"
+                  id="subject-error"
+                  data-error-for="subject"
+                />
+              </div>
+
+              <div class="field">
+                <div class="field__label-row">
+                  <label for="message">
+                    Message <span aria-hidden="true">*</span>
+                  </label>
+                  <span class="character-count" data-character-count>
+                    0 / 2,000
+                  </span>
+                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="7"
+                  minlength="20"
+                  maxlength="2000"
+                  required
+                  aria-describedby="message-error"
+                />
+                <p
+                  class="field-error"
+                  id="message-error"
+                  data-error-for="message"
+                />
+              </div>
+
+              <label class="consent">
+                <input type="checkbox" name="consent" required />
+                <span>
+                  I consent to the Consulate storing and using these details to
+                  respond to my enquiry. Read the{" "}
+                  <a href="#privacy">privacy statement</a>.
+                </span>
+              </label>
+
+              {turnstileSiteKey ? (
+                <div
+                  class="cf-turnstile"
+                  data-sitekey={turnstileSiteKey}
+                  data-action="contact"
+                  data-theme="light"
+                />
+              ) : (
+                <p class="security-note">
+                  The security check will be enabled when the site is connected
+                  to its production credentials.
+                </p>
+              )}
+
+              <div class="form-actions">
+                <button class="button" type="submit" data-submit>
+                  Send enquiry
+                </button>
+                <p class="form-status" data-form-status aria-live="polite" />
+              </div>
+            </form>
+          </>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+{
+  turnstileSiteKey && (
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    />
+  )
+}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-enquiry-form]");
+
+  if (form) {
+    const message = form.querySelector<HTMLTextAreaElement>("#message");
+    const counter = form.querySelector<HTMLElement>("[data-character-count]");
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]");
+    const startedAt = form.querySelector<HTMLInputElement>("[data-started-at]");
+
+    if (startedAt) startedAt.value = String(Date.now());
+
+    const errorMessages: Record<string, string> = {
+      name: "Enter your name so the Consulate knows who is writing",
+      email: "Enter an email address so the Consulate can reply",
+      countryLocation: "Choose your country or location",
+      enquiryType: "Choose the type of enquiry so it reaches the right person",
+      subject: "Enter a short subject for your enquiry",
+      message: "Add a little more detail so the Consulate can help",
+      consent: "Confirm that the Consulate may use these details to reply",
+    };
+
+    const showError = (
+      field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+    ) => {
+      const error = form.querySelector<HTMLElement>(
+        `[data-error-for="${field.name}"]`,
+      );
+      const message =
+        field.validity.valid || !field.required
+          ? ""
+          : errorMessages[field.name] || field.validationMessage;
+
+      if (error) error.textContent = message;
+      field.setAttribute("aria-invalid", message ? "true" : "false");
+      return !message;
+    };
+
+    const fields = form.querySelectorAll<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >("input:not([type='hidden']):not([name='website']), select, textarea");
+
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => showError(field));
+      field.addEventListener("change", () => showError(field));
+    });
+
+    message?.addEventListener("input", () => {
+      if (counter) {
+        counter.textContent = `${message.value.length.toLocaleString("en-NZ")} / 2,000`;
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      const valid = [...fields].every((field) => showError(field));
+      if (!valid || !form.checkValidity()) {
+        event.preventDefault();
+        form.reportValidity();
+        return;
+      }
+
+      event.preventDefault();
+      if (submit) submit.disabled = true;
+      if (status) status.textContent = "Sending your enquiry…";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+          const fields = result.fields as Record<string, string[]> | undefined;
+          if (fields) {
+            Object.entries(fields).forEach(([name, messages]) => {
+              const error = form.querySelector<HTMLElement>(
+                `[data-error-for="${name}"]`,
+              );
+              if (error) error.textContent = messages?.[0] ?? "";
+            });
+          }
+          throw new Error(result.message);
+        }
+
+        form.replaceWith(
+          Object.assign(document.createElement("div"), {
+            className: "form-outcome form-outcome--success",
+            innerHTML:
+              "<p class='eyebrow'>OBRIGADU BARAK / Thank you</p><h3>Your message has been received.</h3><p>The Consulate will reply as soon as possible.</p>",
+          }),
+        );
+      } catch (error) {
+        if (status) {
+          status.textContent =
+            error instanceof Error
+              ? error.message
+              : "The message could not be sent. Call or email the Consulate directly.";
+        }
+        if (submit) submit.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .enquiry {
+    padding-block: var(--space-7);
+    background: color-mix(in srgb, var(--undyed) 64%, white);
+    color: var(--ink);
+  }
+
+  .enquiry__grid {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+    gap: var(--space-7);
+  }
+
+  .enquiry__intro {
+    align-self: start;
+  }
+
+  .enquiry__intro h2,
+  .form-outcome h3 {
+    margin: var(--space-1) 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .enquiry__intro > p:not(.eyebrow) {
+    color: var(--stone);
+    font-size: var(--text-1);
+  }
+
+  .enquiry__direct {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+  }
+
+  .enquiry__direct p {
+    margin: 0 0 var(--space-1);
+    color: var(--stone);
+    font-size: var(--text--1);
+  }
+
+  .enquiry__direct a {
+    width: fit-content;
+    overflow-wrap: anywhere;
+    text-underline-offset: 0.25em;
+  }
+
+  form {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-top: 0.2rem solid var(--turmeric);
+    background: var(--undyed);
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  label,
+  legend {
+    font-size: var(--text--1);
+    font-weight: 500;
+  }
+
+  label > span:not([aria-hidden]),
+  .field label span {
+    color: var(--stone);
+    font-size: var(--text--2);
+    font-weight: 400;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--stone) 62%, transparent);
+    border-radius: 0;
+    background: color-mix(in srgb, var(--undyed) 45%, white);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  textarea {
+    min-height: 11rem;
+    resize: vertical;
+  }
+
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--ink);
+  }
+
+  input[aria-invalid="true"],
+  select[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: var(--morinda);
+  }
+
+  .field__label-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .character-count {
+    color: var(--stone);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+  }
+
+  .field-error {
+    min-height: 1.2em;
+    margin: 0;
+    color: var(--morinda);
+    font-size: var(--text--2);
+  }
+
+  .enquiry-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-1) var(--space-2);
+    padding: var(--space-2) 0 0;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--stone) 36%, transparent);
+  }
+
+  .enquiry-types legend {
+    padding: 0 var(--space-1) 0 0;
+    margin-bottom: var(--space-1);
+  }
+
+  .enquiry-types label,
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .enquiry-types input,
+  .consent input {
+    width: 1.15rem;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    min-height: 1.15rem;
+    margin-top: 0.22rem;
+    accent-color: var(--morinda);
+  }
+
+  .enquiry-types label > span,
+  .consent > span {
+    color: var(--ink) !important;
+    font-size: var(--text--1) !important;
+  }
+
+  .consent a {
+    text-underline-offset: 0.2em;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .form-actions button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .form-status,
+  .security-note {
+    margin: 0;
+    color: var(--stone);
+    font-size: var(--text--1);
+  }
+
+  .form-outcome {
+    padding: var(--space-5);
+    border-top: 0.2rem solid var(--turmeric);
+    background: var(--undyed);
+  }
+
+  .form-outcome--error {
+    margin-bottom: var(--space-3);
+    border-top-color: var(--morinda);
+  }
+
+  .form-outcome--error h3 {
+    font-size: var(--text-2);
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 58rem) {
+    .enquiry__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .enquiry__direct {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .enquiry__direct p {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .field-grid,
+    .enquiry-types,
+    .enquiry__direct {
+      grid-template-columns: 1fr;
+    }
+
+    .enquiry__direct p {
+      grid-column: auto;
+    }
+
+    form {
+      padding-inline: var(--space-2);
+    }
+
+    .form-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .form-actions .button {
+      width: 100%;
+    }
+  }
+</style>
