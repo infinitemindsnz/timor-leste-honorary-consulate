@@ -76,28 +76,85 @@ const iconMap = {
           </div>
 
           {isConsulProfile(section.id) && (
-            <aside class="consul-profile" aria-label="Honorary Consul profile">
-              <p class="consul-profile__label">Profile</p>
-              <dl>
-                <div>
-                  <dt>Role</dt>
-                  <dd>
-                    First Honorary Consul for Auckland and the North Island
-                  </dd>
-                </div>
-                <div>
-                  <dt>Appointment</dt>
-                  <dd>Five-year voluntary appointment</dd>
-                </div>
-                <div>
-                  <dt>Authority</dt>
-                  <dd>Embassy of Timor-Leste in Wellington</dd>
-                </div>
-              </dl>
-              <a href="#contact">
-                Contact Dave <span aria-hidden="true">→</span>
-              </a>
-            </aside>
+            <div class="consul-feature">
+              <figure class="consul-portrait">
+                <picture>
+                  <source
+                    media="(max-width: 40rem)"
+                    type="image/avif"
+                    srcset="
+                      /images/dave-ananth-consul-mobile-640.avif 640w,
+                      /images/dave-ananth-consul-mobile-900.avif 900w
+                    "
+                    sizes="100vw"
+                  />
+                  <source
+                    media="(max-width: 40rem)"
+                    type="image/webp"
+                    srcset="
+                      /images/dave-ananth-consul-mobile-640.webp 640w,
+                      /images/dave-ananth-consul-mobile-900.webp 900w
+                    "
+                    sizes="100vw"
+                  />
+                  <source
+                    type="image/avif"
+                    srcset="
+                      /images/dave-ananth-consul-960.avif   960w,
+                      /images/dave-ananth-consul-1440.avif 1440w,
+                      /images/dave-ananth-consul-1920.avif 1920w
+                    "
+                    sizes="(max-width: 52rem) 100vw, 70vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcset="
+                      /images/dave-ananth-consul-960.webp   960w,
+                      /images/dave-ananth-consul-1440.webp 1440w,
+                      /images/dave-ananth-consul-1920.webp 1920w
+                    "
+                    sizes="(max-width: 52rem) 100vw, 70vw"
+                  />
+                  <img
+                    src="/images/dave-ananth-consul.jpg"
+                    width="1600"
+                    height="1067"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Dave Ananth, Honorary Consul of Timor-Leste, standing beside the Consulate banner in Auckland"
+                  />
+                </picture>
+                <figcaption>
+                  Dave Ananth <span aria-hidden="true">·</span> Honorary Consul
+                </figcaption>
+              </figure>
+
+              <aside
+                class="consul-profile"
+                aria-label="Honorary Consul profile"
+              >
+                <p class="consul-profile__label">Profile</p>
+                <dl>
+                  <div>
+                    <dt>Role</dt>
+                    <dd>
+                      First Honorary Consul for Auckland and the North Island
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Appointment</dt>
+                    <dd>Five-year voluntary appointment</dd>
+                  </div>
+                  <div>
+                    <dt>Authority</dt>
+                    <dd>Embassy of Timor-Leste in Wellington</dd>
+                  </div>
+                </dl>
+                <a href="#contact">
+                  Contact Dave <span aria-hidden="true">→</span>
+                </a>
+              </aside>
+            </div>
           )}
 
           {section.data.facts && (
@@ -264,19 +321,48 @@ const iconMap = {
   .service-grid,
   .timeline,
   .stat-grid,
-  .consul-profile {
+  .consul-feature {
     grid-column: 1 / -1;
+  }
+
+  .consul-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(18rem, 0.8fr);
+    border-top: 0.2rem solid var(--turmeric);
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .consul-portrait {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .consul-portrait picture,
+  .consul-portrait img {
+    display: block;
+    width: 100%;
+  }
+
+  .consul-portrait img {
+    height: auto;
+  }
+
+  .consul-portrait figcaption {
+    padding: var(--space-2) var(--space-3);
+    color: color-mix(in srgb, var(--undyed) 72%, transparent);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
   }
 
   .consul-profile {
     display: grid;
-    grid-template-columns: 0.5fr 2fr auto;
     gap: var(--space-3);
     padding: var(--space-4);
-    align-items: start;
-    border-top: 0.2rem solid var(--turmeric);
-    background: var(--ink);
-    color: var(--undyed);
+    align-content: start;
+    border-left: 1px solid color-mix(in srgb, var(--undyed) 16%, transparent);
   }
 
   .consul-profile__label,
@@ -313,6 +399,7 @@ const iconMap = {
   }
 
   .consul-profile a {
+    margin-top: var(--space-2);
     color: var(--turmeric);
     font-weight: 500;
     white-space: nowrap;
@@ -438,8 +525,13 @@ const iconMap = {
   }
 
   @media (max-width: 52rem) {
-    .consul-profile {
+    .consul-feature {
       grid-template-columns: 1fr;
+    }
+
+    .consul-profile {
+      border-top: 1px solid color-mix(in srgb, var(--undyed) 16%, transparent);
+      border-left: 0;
     }
 
     .content-section__inner {
@@ -451,7 +543,7 @@ const iconMap = {
     .service-grid,
     .timeline,
     .stat-grid,
-    .consul-profile {
+    .consul-feature {
       grid-column: auto;
     }
 
