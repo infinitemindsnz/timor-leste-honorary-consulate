@@ -4,6 +4,7 @@ import { render } from "astro:content";
 import {
   BriefcaseBusiness,
   Coins,
+  Church,
   GraduationCap,
   Handshake,
   HeartHandshake,
@@ -45,6 +46,7 @@ const iconMap = {
   briefcase: BriefcaseBusiness,
   "heart-handshake": HeartHandshake,
   megaphone: Megaphone,
+  church: Church,
 };
 ---
 
@@ -57,6 +59,7 @@ const iconMap = {
         height={40}
       />
       <section
+        id={isConsulProfile(section.id) ? "consul" : undefined}
         class:list={[
           "content-section",
           `content-section--${section.data.surface}`,
@@ -193,7 +196,7 @@ const iconMap = {
                 <div>
                   <dt>{stat.label}</dt>
                   <dd>{stat.value}</dd>
-                  <p>{stat.asAt}</p>
+                  {stat.asAt && <p>{stat.asAt}</p>}
                 </div>
               ))}
             </dl>

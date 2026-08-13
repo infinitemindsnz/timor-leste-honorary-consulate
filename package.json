@@ -8,11 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "lint": "eslint . && astro check",
-    "format": "prettier --write .",
-    "test": "node --experimental-strip-types --test tests/*.test.ts"
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "@astrojs/netlify": "^6.6.5",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/ibm-plex-mono": "^5.2.6",
     "@fontsource/newsreader": "^5.2.8",
@@ -20,14 +18,11 @@
     "@lucide/astro": "^1.28.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
-    "resend": "^6.18.1",
-    "tailwindcss": "^4.1.18",
-    "zod": "^3.25.76"
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@eslint/js": "^9.39.2",
-    "@netlify/edge-functions": "^3.0.8",
     "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^9.39.2",
     "eslint-plugin-astro": "^1.5.0",

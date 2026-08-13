@@ -31,5 +31,3 @@ Timor-Leste participates in New Zealand’s **Recognised Seasonal Employer (RSE)
 ### Energy and Greater Sunrise
 
 Negotiations over the Greater Sunrise gas field represent one of the region’s most significant energy questions. Any investment language must remain measured and reflect current official information.
-
-> Those who establish relationships early — who understand the environment and build trust — are often best positioned as the economy develops.

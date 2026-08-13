@@ -1,8 +1,10 @@
 ---
 const navItems = [
-  { href: "#timor-leste", label: "Timor-Leste" },
-  { href: "#opportunity", label: "Opportunity" },
+  { href: "#opportunity", label: "Trade & Investment" },
+  { href: "#consul", label: "The Consul" },
   { href: "#consular-services", label: "Consular Services" },
+  { href: "#timor-leste", label: "Timor-Leste" },
+  { href: "#insights", label: "Insights" },
 ];
 ---
 
@@ -16,7 +18,8 @@ const navItems = [
       <img src="/images/timor-leste-flag.png" width="89" height="50" alt="" />
       <span class="wordmark__copy">
         <span class="wordmark__primary">
-          Honorary Consulate of the Democratic Republic of Timor-Leste
+          Honorary Consulate of the Democratic Republic of
+          <span class="wordmark__country">Timor-Leste</span>
         </span>
         <span class="wordmark__secondary">
           Auckland &amp; North Island, New Zealand
@@ -193,6 +196,10 @@ const navItems = [
     line-height: 1.02;
   }
 
+  .wordmark__country {
+    white-space: nowrap;
+  }
+
   .wordmark__secondary {
     color: var(--turmeric);
     font-family: var(--font-utility);
@@ -212,14 +219,14 @@ const navItems = [
   .desktop-nav ul {
     display: flex;
     align-items: center;
-    gap: clamp(var(--space-2), 2vw, var(--space-4));
+    gap: clamp(var(--space-1), 1.2vw, var(--space-2));
   }
 
   .desktop-nav a {
     display: inline-flex;
     min-height: 2.75rem;
     align-items: center;
-    font-size: var(--text--1);
+    font-size: var(--text--2);
     font-weight: 500;
     text-decoration: none;
   }
@@ -347,7 +354,7 @@ const navItems = [
     }
   }
 
-  @media (max-width: 64rem) {
+  @media (max-width: 78rem) {
     .desktop-nav {
       display: none;
     }

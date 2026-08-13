@@ -5,9 +5,6 @@ import ContentSections from "../components/ContentSections.astro";
 import SinglePageContact from "../components/SinglePageContact.astro";
 import TaisBand from "../components/TaisBand.astro";
 
-export const prerender = false;
-
-const status = Astro.url.searchParams.get("status");
 const allSections = await getCollection("sections");
 const sectionsFor = (page: string) =>
   allSections
@@ -36,13 +33,16 @@ const consularSections = sectionsFor("consular-services");
         </h1>
         <span class="hero__rule" aria-hidden="true"></span>
         <p class="hero__lede">
-          We foster cooperation, strengthen friendships and create opportunities
-          that endure — between our nations and our people.
+          The Honorary Consulate connects Timor-Leste with Auckland and the
+          North Island by supporting Timorese nationals, strengthening cultural
+          ties, and fostering enduring partnerships and economic pathways for
+          New Zealand investors and businesses to engage directly with
+          Timor-Leste's developing sectors and post-ASEAN accession economy.
         </p>
         <div class="hero__actions">
           <a class="button" href="#contact">Contact the Consulate</a>
           <a class="button button--outline" href="#consular-services">
-            Consular guidance
+            Consular services
           </a>
         </div>
       </div>
@@ -144,10 +144,6 @@ const consularSections = sectionsFor("consular-services");
       </div>
 
       <aside class="embassy-referral" aria-labelledby="embassy-title">
-        <p class="embassy-referral__coordinates">
-          8.5°S 125.7°E · Dili <span aria-hidden="true">/</span> 36.8°S 174.7°E ·
-          Auckland
-        </p>
         <div>
           <h2 id="embassy-title">Wellington Embassy</h2>
           <p>
@@ -162,32 +158,15 @@ const consularSections = sectionsFor("consular-services");
     </div>
   </section>
 
-  <section class="relationship" aria-labelledby="relationship-title">
-    <div class="container relationship__inner">
-      <p class="eyebrow">DILI · AUCKLAND</p>
-      <h2 id="relationship-title">Two points, one relationship.</h2>
-      <div>
-        <p>
-          The Honorary Consulate connects Timor-Leste with Auckland and the
-          North Island — supporting Timorese nationals, strengthening cultural
-          ties, and opening thoughtful pathways for New Zealand businesses and
-          investors.
-        </p>
-        <a href="#contact">
-          Start a conversation <span aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <div id="timor-leste" class="chapter">
     <header class="chapter-heading">
       <div class="container chapter-heading__inner">
         <p class="eyebrow">BEM-VINDO / Welcome</p>
         <h2>Timor-Leste</h2>
         <p>
-          A young democracy with an ancient cultural inheritance — shaped by
-          courage, community and a profound joy in being free.
+          A young democracy with an ancient cultural heritage, shaped by
+          courage, community and defined by the triumph of self-determination
+          and national independence.
         </p>
       </div>
     </header>
@@ -195,17 +174,6 @@ const consularSections = sectionsFor("consular-services");
   </div>
 
   <div id="opportunity" class="chapter">
-    <header class="chapter-heading chapter-heading--light">
-      <div class="container chapter-heading__inner">
-        <p class="eyebrow">PARCERIA / Partnership</p>
-        <h2>A rare window, now open</h2>
-        <p>
-          ASEAN membership gives Timor-Leste a stronger regional platform. New
-          Zealand experience can contribute where relationships are built with
-          patience and trust.
-        </p>
-      </div>
-    </header>
     <ContentSections sections={opportunitySections} />
   </div>
 
@@ -223,7 +191,29 @@ const consularSections = sectionsFor("consular-services");
     <ContentSections sections={consularSections} />
   </div>
 
-  <SinglePageContact {status} />
+  <section id="insights" class="insights" aria-labelledby="insights-title">
+    <TaisBand
+      pattern="stepped-lozenge"
+      colors={["ink", "morinda", "turmeric", "undyed"]}
+      height={40}
+    />
+    <div class="container insights__inner">
+      <header>
+        <p class="eyebrow">HANOIN / Insights</p>
+        <h2 id="insights-title">Insights</h2>
+      </header>
+      <article class="insights__empty">
+        <p class="eyebrow">Articles &amp; perspectives</p>
+        <h3>No articles have been published yet.</h3>
+        <p>
+          Commentary from the Honorary Consul on Timor-Leste, trade and the
+          relationship with New Zealand will appear here.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <SinglePageContact />
 </BaseLayout>
 
 <style>
@@ -448,7 +438,7 @@ const consularSections = sectionsFor("consular-services");
 
   .embassy-referral {
     display: grid;
-    grid-template-columns: 1.05fr 1.5fr auto;
+    grid-template-columns: minmax(0, 1.5fr) auto;
     gap: var(--space-3);
     padding: var(--space-3) var(--space-2);
     align-items: center;
@@ -467,14 +457,8 @@ const consularSections = sectionsFor("consular-services");
   }
 
   .embassy-referral p {
-    color: var(--stone);
+    color: var(--morinda);
     font-size: var(--text--1);
-  }
-
-  .embassy-referral__coordinates {
-    font-family: var(--font-utility);
-    letter-spacing: var(--tracking-utility);
-    text-transform: uppercase;
   }
 
   .embassy-referral a {
@@ -482,43 +466,6 @@ const consularSections = sectionsFor("consular-services");
     font-size: var(--text--1);
     font-weight: 500;
     text-decoration: none;
-  }
-
-  .relationship {
-    padding-block: var(--space-7);
-    background: var(--indigo);
-    color: var(--undyed);
-  }
-
-  .relationship__inner {
-    display: grid;
-    grid-template-columns: 0.55fr 1fr 1fr;
-    gap: var(--space-5);
-    align-items: start;
-  }
-
-  .relationship .eyebrow {
-    color: var(--turmeric);
-  }
-
-  .relationship h2 {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: var(--text-4);
-    font-weight: 600;
-    letter-spacing: var(--tracking-display);
-    line-height: var(--line-heading);
-  }
-
-  .relationship p {
-    margin: 0 0 var(--space-2);
-    color: color-mix(in srgb, var(--undyed) 82%, transparent);
-  }
-
-  .relationship a {
-    color: var(--turmeric);
-    font-weight: 500;
-    text-underline-offset: 0.25em;
   }
 
   .chapter-heading {
@@ -557,6 +504,47 @@ const consularSections = sectionsFor("consular-services");
 
   .chapter-heading:not(.chapter-heading--light) .eyebrow {
     color: var(--turmeric);
+  }
+
+  .insights {
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .insights__inner {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+    gap: var(--space-5) var(--space-7);
+    padding-block: var(--space-7);
+  }
+
+  .insights h2,
+  .insights h3 {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .insights h2 {
+    font-size: var(--text-4);
+    line-height: var(--line-heading);
+  }
+
+  .insights h3 {
+    font-size: var(--text-2);
+  }
+
+  .insights__empty {
+    padding: var(--space-4);
+    border-top: 0.2rem solid var(--turmeric);
+    background: color-mix(in srgb, var(--undyed) 52%, white);
+  }
+
+  .insights__empty > p:last-child {
+    max-width: 42rem;
+    margin: var(--space-2) 0 0;
+    color: var(--stone);
   }
 
   @media (max-width: 70rem) {
@@ -609,7 +597,7 @@ const consularSections = sectionsFor("consular-services");
 
     .embassy-referral,
     .chapter-heading__inner,
-    .relationship__inner {
+    .insights__inner {
       grid-template-columns: 1fr;
     }
   }

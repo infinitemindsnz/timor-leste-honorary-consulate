@@ -25,6 +25,15 @@ facts:
   - icon: handshake
     title: ASEAN member
     text: "Formally admitted as ASEAN’s 11th member on 26 October 2025 in Kuala Lumpur."
+  - icon: languages
+    title: Language
+    text: "Tetum and Portuguese are official languages, with Indonesian and English serving as working languages."
+  - icon: sprout
+    title: Cuisine
+    text: "Local staples, fresh seafood and Portuguese and Indonesian influences sit alongside internationally recognised organic arabica coffee."
+  - icon: church
+    title: Religion
+    text: "Roman Catholic faith is central to national life and coexists with enduring indigenous beliefs and traditions."
 ---
 
 Timor-Leste occupies the eastern half of the island of Timor in Southeast Asia — one of the world’s youngest nations, and one of its most compelling stories.

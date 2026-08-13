@@ -43,6 +43,7 @@ const sections = defineCollection({
             "briefcase",
             "heart-handshake",
             "megaphone",
+            "church",
           ]),
           title: z.string(),
           text: z.string(),
@@ -63,7 +64,7 @@ const sections = defineCollection({
         z.object({
           value: z.string(),
           label: z.string(),
-          asAt: z.string(),
+          asAt: z.string().optional(),
         }),
       )
       .optional(),

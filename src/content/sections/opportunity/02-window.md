@@ -3,22 +3,17 @@ page: opportunity
 order: 2
 eyebrow: "OPORTUNIDADE / Opportunity"
 title: "A rare window now open"
-lede: "For early movers who invest in relationships and understand the environment, the opportunities are substantial."
 pattern: morinda-stripe
 surface: undyed
 stats:
-  - value: "$3.8T"
-    label: "ASEAN regional economy"
-    asAt: "As at: TODO(verify)"
-  - value: "$18.9B"
-    label: "Petroleum Fund, USD"
-    asAt: "As at: TODO(verify)"
-  - value: "680M"
-    label: "ASEAN consumer market"
-    asAt: "As at: TODO(verify)"
-  - value: "50%+"
+  - value: "US$4.5 Trillion"
+    label: "ASEAN Regional Economy"
+  - value: "US$18.43 Billion"
+    label: "Petroleum Fund"
+  - value: "~683 Million+"
+    label: "ASEAN Consumer Market"
+  - value: "55%+"
     label: "Population under 25"
-    asAt: "As at: TODO(verify)"
 ---
 
-ASEAN membership places Timor-Leste within one of the world’s most dynamic regional economies. The figures shown here are retained from the existing site for demonstration purposes and must be independently verified and dated before publication.
+Timor-Leste’s accession to ASEAN opens a dynamic regional economy to early movers, offering substantial opportunities for investors who take the time to understand the local environment and prioritise relationships.
