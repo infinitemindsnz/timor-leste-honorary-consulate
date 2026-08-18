@@ -1,0 +1,329 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TaisBand from "./TaisBand.astro";
+
+interface Props {
+  articles: CollectionEntry<"insights">[];
+}
+
+const { articles } = Astro.props;
+---
+
+<section id="insights" class="insights" aria-labelledby="insights-title">
+  <TaisBand
+    pattern="stepped-lozenge"
+    colors={["ink", "morinda", "turmeric", "undyed"]}
+    height={40}
+  />
+  <div class="container insights__inner">
+    <header class="insights__heading">
+      <p class="eyebrow">HANOIN / Insights</p>
+      <h2 id="insights-title">Insights</h2>
+      <p>
+        Articles and perspectives from the Honorary Consul on Timor-Leste’s
+        economy, labour mobility and opportunities for international
+        partnership.
+      </p>
+    </header>
+
+    <div class="insights__grid">
+      {
+        articles.map((article) => (
+          <article
+            class:list={[
+              "insight-card",
+              article.data.featured && "insight-card--featured",
+            ]}
+          >
+            <div class="insight-card__meta">
+              <span>{article.data.category}</span>
+              <time datetime={article.data.dateTime}>
+                {article.data.dateLabel}
+              </time>
+            </div>
+            <div class="insight-card__content">
+              <h3>{article.data.title}</h3>
+              <p class="insight-card__summary">{article.data.summary}</p>
+              <p class="insight-card__byline">By {article.data.author}</p>
+            </div>
+            <div class="insight-card__footer">
+              <div class="insight-card__links">
+                <a
+                  class="insight-card__primary"
+                  href={article.data.pdfPath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Read PDF: ${article.data.title} (opens in a new tab)`}
+                >
+                  <svg
+                    class="insight-card__icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                    <path d="M14 2v6h6M8 13h8M8 17h8" />
+                  </svg>
+                  Read PDF
+                </a>
+                <a
+                  href={article.data.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View original publication: ${article.data.title} (opens in a new tab)`}
+                >
+                  Original publication
+                  <svg
+                    class="insight-card__icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M7 7h10v10" />
+                  </svg>
+                </a>
+              </div>
+              <span class="insight-card__document">
+                {article.data.pageCount}{" "}
+                {article.data.pageCount === 1 ? "page" : "pages"} · PDF
+              </span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .insights {
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .insights__inner {
+    padding-block: var(--space-7);
+  }
+
+  .insights__heading {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+    gap: var(--space-1) var(--space-7);
+    margin-bottom: var(--space-5);
+  }
+
+  .insights__heading .eyebrow {
+    grid-column: 1;
+  }
+
+  .insights__heading h2 {
+    grid-column: 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4);
+    font-weight: 600;
+    line-height: var(--line-heading);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .insights__heading > p:last-child {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    max-width: 40rem;
+    margin: 0;
+    color: var(--stone);
+    align-self: end;
+  }
+
+  .insights__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+  }
+
+  .insight-card {
+    display: flex;
+    min-height: 30rem;
+    flex-direction: column;
+    padding: var(--space-4);
+    border-right: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+    background: color-mix(in srgb, var(--undyed) 68%, white);
+  }
+
+  .insight-card--featured {
+    min-height: auto;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.55fr) minmax(0, 1.45fr);
+    gap: var(--space-5) var(--space-7);
+    padding: var(--space-5);
+    border-top: 0.25rem solid var(--turmeric);
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .insight-card__meta,
+  .insight-card__byline,
+  .insight-card__document {
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .insight-card__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    color: var(--morinda);
+  }
+
+  .insight-card--featured .insight-card__meta {
+    display: grid;
+    justify-content: start;
+    align-content: start;
+    color: var(--turmeric);
+  }
+
+  .insight-card__content {
+    margin-block: var(--space-4);
+  }
+
+  .insight-card--featured .insight-card__content {
+    margin: 0;
+  }
+
+  .insight-card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-1);
+    font-weight: 600;
+    line-height: var(--line-heading);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .insight-card--featured h3 {
+    max-width: 20ch;
+    font-size: var(--text-3);
+  }
+
+  .insight-card__summary {
+    margin: var(--space-3) 0 0;
+    color: var(--stone);
+  }
+
+  .insight-card--featured .insight-card__summary {
+    max-width: 44rem;
+    color: color-mix(in srgb, var(--undyed) 78%, transparent);
+  }
+
+  .insight-card__byline {
+    margin: var(--space-3) 0 0;
+  }
+
+  .insight-card__footer {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: auto;
+  }
+
+  .insight-card--featured .insight-card__footer {
+    grid-column: 2;
+  }
+
+  .insight-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    align-items: center;
+  }
+
+  .insight-card__links a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    gap: var(--space-1);
+    align-items: center;
+    color: currentColor;
+    font-weight: 500;
+    text-underline-offset: 0.25em;
+  }
+
+  .insight-card__links a:hover {
+    text-decoration-thickness: 0.12em;
+  }
+
+  .insight-card__icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .insight-card__primary {
+    padding-inline: var(--space-2);
+    border: 1px solid currentColor;
+    text-decoration: none;
+  }
+
+  .insight-card__document {
+    color: var(--stone);
+  }
+
+  .insight-card--featured .insight-card__document {
+    color: color-mix(in srgb, var(--undyed) 62%, transparent);
+  }
+
+  @media (max-width: 70rem) {
+    .insights__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .insight-card:not(.insight-card--featured):last-child {
+      grid-column: 1 / -1;
+      min-height: 24rem;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .insights__heading,
+    .insight-card--featured {
+      grid-template-columns: 1fr;
+    }
+
+    .insights__heading > p:last-child {
+      grid-column: 1;
+      grid-row: auto;
+      margin-top: var(--space-2);
+    }
+
+    .insight-card--featured .insight-card__footer {
+      grid-column: 1;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .insights__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .insight-card,
+    .insight-card:not(.insight-card--featured):last-child {
+      min-height: auto;
+      grid-column: auto;
+      padding: var(--space-4) var(--space-3);
+    }
+
+    .insight-card__footer {
+      margin-top: var(--space-5);
+    }
+
+    .insight-card__links {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

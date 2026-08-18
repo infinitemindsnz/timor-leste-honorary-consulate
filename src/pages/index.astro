@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContentSections from "../components/ContentSections.astro";
+import Insights from "../components/Insights.astro";
 import SinglePageContact from "../components/SinglePageContact.astro";
 import TaisBand from "../components/TaisBand.astro";
 
@@ -14,6 +15,9 @@ const sectionsFor = (page: string) =>
 const timorLesteSections = sectionsFor("timor-leste");
 const opportunitySections = sectionsFor("opportunity");
 const consularSections = sectionsFor("consular-services");
+const insights = (await getCollection("insights")).sort(
+  (a, b) => b.data.sortDate.valueOf() - a.data.sortDate.valueOf(),
+);
 ---
 
 <BaseLayout
@@ -191,27 +195,7 @@ const consularSections = sectionsFor("consular-services");
     <ContentSections sections={consularSections} />
   </div>
 
-  <section id="insights" class="insights" aria-labelledby="insights-title">
-    <TaisBand
-      pattern="stepped-lozenge"
-      colors={["ink", "morinda", "turmeric", "undyed"]}
-      height={40}
-    />
-    <div class="container insights__inner">
-      <header>
-        <p class="eyebrow">HANOIN / Insights</p>
-        <h2 id="insights-title">Insights</h2>
-      </header>
-      <article class="insights__empty">
-        <p class="eyebrow">Articles &amp; perspectives</p>
-        <h3>No articles have been published yet.</h3>
-        <p>
-          Commentary from the Honorary Consul on Timor-Leste, trade and the
-          relationship with New Zealand will appear here.
-        </p>
-      </article>
-    </div>
-  </section>
+  <Insights articles={insights} />
 
   <SinglePageContact />
 </BaseLayout>
@@ -506,47 +490,6 @@ const consularSections = sectionsFor("consular-services");
     color: var(--turmeric);
   }
 
-  .insights {
-    background: var(--undyed);
-    color: var(--ink);
-  }
-
-  .insights__inner {
-    display: grid;
-    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
-    gap: var(--space-5) var(--space-7);
-    padding-block: var(--space-7);
-  }
-
-  .insights h2,
-  .insights h3 {
-    margin: var(--space-1) 0 0;
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: var(--tracking-display);
-  }
-
-  .insights h2 {
-    font-size: var(--text-4);
-    line-height: var(--line-heading);
-  }
-
-  .insights h3 {
-    font-size: var(--text-2);
-  }
-
-  .insights__empty {
-    padding: var(--space-4);
-    border-top: 0.2rem solid var(--turmeric);
-    background: color-mix(in srgb, var(--undyed) 52%, white);
-  }
-
-  .insights__empty > p:last-child {
-    max-width: 42rem;
-    margin: var(--space-2) 0 0;
-    color: var(--stone);
-  }
-
   @media (max-width: 70rem) {
     .hero__grid {
       grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.65fr);
@@ -596,8 +539,7 @@ const consularSections = sectionsFor("consular-services");
     }
 
     .embassy-referral,
-    .chapter-heading__inner,
-    .insights__inner {
+    .chapter-heading__inner {
       grid-template-columns: 1fr;
     }
   }

@@ -85,4 +85,21 @@ const sections = defineCollection({
   }),
 });
 
-export const collections = { pages, sections };
+const insights = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/insights" }),
+  schema: z.object({
+    title: z.string(),
+    dateLabel: z.string(),
+    dateTime: z.string(),
+    sortDate: z.coerce.date(),
+    category: z.string(),
+    author: z.string(),
+    summary: z.string(),
+    sourceUrl: z.string().url(),
+    pdfPath: z.string(),
+    pageCount: z.number().int().positive(),
+    featured: z.boolean().default(false),
+  }),
+});
+
+export const collections = { pages, sections, insights };
