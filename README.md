@@ -40,8 +40,21 @@ Timor-Leste in Wellington.
 
 ## Deployment
 
-The project is configured for Netlify. Connect this repository and deploy from
-the default branch.
+The production site is hosted on Cloudflare Pages in the
+`timor-leste-consulate-auckland` project.
+
+```bash
+npm run deploy:cloudflare
+```
+
+The command builds the static Astro site and deploys `dist/` to the production
+`main` branch. Cloudflare serves the site at:
+
+- `https://www.consulatetimorleste.co.nz`
+- `https://timor-leste-consulate-auckland.pages.dev`
+
+The apex domain redirects to `www`. A dated pre-migration DNS backup is kept
+locally in the ignored `private-backups/` directory and must not be committed.
 
 Before public launch, complete every `TODO(client)` and `TODO(verify)` item,
 and verify all official contact details with the Consulate.

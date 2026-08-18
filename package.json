@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "deploy:cloudflare": "npm run build && npx --yes wrangler@latest pages deploy dist --project-name timor-leste-consulate-auckland --branch main",
     "preview": "astro preview",
     "lint": "eslint . && astro check",
     "format": "prettier --write ."
