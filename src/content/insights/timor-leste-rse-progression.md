@@ -10,6 +10,12 @@ sourceUrl: "https://www.linkedin.com/pulse/timor-lestes-progression-new-zealands
 pdfPath: "/publications/timor-leste-rse-progression.pdf"
 pageCount: 2
 readingMinutes: 3
+heroImage:
+  basePath: "/images/insights/rse-progression"
+  width: 1279
+  height: 720
+  alt: "Concept image of Timor-Leste and New Zealand flags overlooking rows of horticultural crops"
+  caption: "Concept image accompanying the original publication on Timor-Leste’s participation in New Zealand’s RSE scheme."
 featured: false
 ---
 

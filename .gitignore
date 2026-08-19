@@ -13,3 +13,4 @@ AGENTS.md
 private-backups/
 .playwright-cli/
 output/playwright/
+tmp/pdfs/

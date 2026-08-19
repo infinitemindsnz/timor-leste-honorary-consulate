@@ -10,6 +10,12 @@ sourceUrl: "https://mplaw.nz/timor-leste-an-emerging-opportunity-new-zealand/"
 pdfPath: "/publications/timor-leste-emerging-opportunity.pdf"
 pageCount: 3
 readingMinutes: 4
+heroImage:
+  basePath: "/images/insights/emerging-opportunity"
+  width: 1346
+  height: 896
+  alt: "Concept image of Timor-Leste’s coastline with its flag, port, infrastructure plans and a growing plant"
+  caption: "Concept image accompanying the original publication on investment opportunities in Timor-Leste."
 featured: false
 ---
 

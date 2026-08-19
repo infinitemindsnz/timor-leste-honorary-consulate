@@ -19,12 +19,17 @@ interface Props {
 const { article } = Astro.props;
 const { Content } = await render(article);
 const articleUrl = new URL(`/insights/${article.id}/`, Astro.site);
+const articleImage = new URL(
+  `${article.data.heroImage.basePath}.jpg`,
+  Astro.site,
+);
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: article.data.title,
   description: article.data.summary,
   datePublished: article.data.dateTime,
+  image: articleImage.href,
   author: {
     "@type": "Person",
     name: article.data.author,
@@ -42,6 +47,7 @@ const structuredData = {
   title={article.data.title}
   description={article.data.summary}
   ogType="article"
+  image={articleImage.href}
   {structuredData}
 >
   <article class="publication">
@@ -71,6 +77,29 @@ const structuredData = {
         </p>
       </div>
     </header>
+
+    <figure class="publication__hero">
+      <picture>
+        <source
+          srcset={`${article.data.heroImage.basePath}.avif`}
+          type="image/avif"
+        />
+        <source
+          srcset={`${article.data.heroImage.basePath}.webp`}
+          type="image/webp"
+        />
+        <img
+          src={`${article.data.heroImage.basePath}.jpg`}
+          width={article.data.heroImage.width}
+          height={article.data.heroImage.height}
+          alt={article.data.heroImage.alt}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
+      <figcaption>{article.data.heroImage.caption}</figcaption>
+    </figure>
 
     <div class="publication__body">
       <div class="publication__rail" aria-hidden="true">
@@ -190,6 +219,34 @@ const structuredData = {
     font-weight: 500;
   }
 
+  .publication__hero {
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    margin: calc(-1 * var(--space-5)) auto 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .publication__hero picture,
+  .publication__hero img {
+    display: block;
+    width: 100%;
+  }
+
+  .publication__hero img {
+    height: auto;
+    border: 1px solid color-mix(in srgb, var(--undyed) 32%, transparent);
+  }
+
+  .publication__hero figcaption,
+  .publication__prose :global(.article-figure figcaption) {
+    margin-top: var(--space-1);
+    color: var(--stone);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
   .publication__body {
     display: grid;
     grid-template-columns: minmax(11rem, 1fr) minmax(0, 48rem) minmax(
@@ -261,6 +318,20 @@ const structuredData = {
     overflow-wrap: anywhere;
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.18em;
+  }
+
+  .publication__prose :global(.article-figure) {
+    margin: var(--space-5) 0;
+  }
+
+  .publication__prose :global(.article-figure picture),
+  .publication__prose :global(.article-figure img) {
+    display: block;
+    width: 100%;
+  }
+
+  .publication__prose :global(.article-figure img) {
+    height: auto;
   }
 
   .publication__prose :global(h2:last-of-type + ol) {
@@ -339,6 +410,19 @@ const structuredData = {
 
     .publication h1 {
       font-size: var(--text-4);
+    }
+
+    .publication__hero {
+      width: 100%;
+      margin-top: 0;
+    }
+
+    .publication__hero img {
+      border: 0;
+    }
+
+    .publication__hero figcaption {
+      padding-inline: var(--page-gutter);
     }
 
     .publication__meta {

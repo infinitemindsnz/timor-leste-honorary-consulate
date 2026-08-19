@@ -99,6 +99,13 @@ const insights = defineCollection({
     pdfPath: z.string(),
     pageCount: z.number().int().positive(),
     readingMinutes: z.number().int().positive(),
+    heroImage: z.object({
+      basePath: z.string(),
+      width: z.number().int().positive(),
+      height: z.number().int().positive(),
+      alt: z.string(),
+      caption: z.string(),
+    }),
     featured: z.boolean().default(false),
   }),
 });

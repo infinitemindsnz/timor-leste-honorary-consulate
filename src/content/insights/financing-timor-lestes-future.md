@@ -10,6 +10,12 @@ sourceUrl: "https://www.linkedin.com/feed/update/urn:li:activity:748735076160627
 pdfPath: "/publications/financing-timor-lestes-future.pdf"
 pageCount: 9
 readingMinutes: 14
+heroImage:
+  basePath: "/images/insights/financing-timor-leste-future"
+  width: 1346
+  height: 901
+  alt: "Concept image combining Timor-Leste’s port, renewable energy, infrastructure and investment priorities"
+  caption: "Concept image accompanying the original publication on Timor-Leste’s post-petroleum economy."
 featured: true
 ---
 
