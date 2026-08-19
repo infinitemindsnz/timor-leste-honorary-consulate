@@ -12,7 +12,6 @@ const sectionsFor = (page: string) =>
     .filter((section) => section.data.page === page)
     .sort((a, b) => a.data.order - b.data.order);
 
-const timorLesteSections = sectionsFor("timor-leste");
 const opportunitySections = sectionsFor("opportunity");
 const consularSections = sectionsFor("consular-services");
 const insights = (await getCollection("insights")).sort(
@@ -133,18 +132,6 @@ const insights = (await getCollection("insights")).sort(
             >Explore opportunities <span aria-hidden="true">→</span></span
           >
         </a>
-
-        <a class="doorway" href="#timor-leste">
-          <span class="doorway__rule" aria-hidden="true"></span>
-          <h3>Discover<br />Timor-Leste</h3>
-          <p>
-            Meet a young democracy shaped by courage, many languages and living
-            traditions.
-          </p>
-          <span class="doorway__action"
-            >Explore the nation <span aria-hidden="true">→</span></span
-          >
-        </a>
       </div>
 
       <aside class="embassy-referral" aria-labelledby="embassy-title">
@@ -161,21 +148,6 @@ const insights = (await getCollection("insights")).sort(
       </aside>
     </div>
   </section>
-
-  <div id="timor-leste" class="chapter">
-    <header class="chapter-heading">
-      <div class="container chapter-heading__inner">
-        <p class="eyebrow">BEM-VINDO / Welcome</p>
-        <h2>Timor-Leste</h2>
-        <p>
-          A young democracy with an ancient cultural heritage, shaped by
-          courage, community and defined by the triumph of self-determination
-          and national independence.
-        </p>
-      </div>
-    </header>
-    <ContentSections sections={timorLesteSections} />
-  </div>
 
   <div id="opportunity" class="chapter">
     <ContentSections sections={opportunitySections} />
@@ -371,7 +343,7 @@ const insights = (await getCollection("insights")).sort(
 
   .doorway-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .doorway {
