@@ -11,3 +11,5 @@ AGENTS.md
 .env.*
 !.env.example
 private-backups/
+.playwright-cli/
+output/playwright/

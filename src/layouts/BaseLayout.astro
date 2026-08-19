@@ -6,9 +6,11 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  ogType?: "website" | "article";
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogType = "website", structuredData } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle =
   title === "Home"
@@ -41,7 +43,7 @@ const governmentOffice = {
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#12141C" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Honorary Consulate of Timor-Leste" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -55,6 +57,15 @@ const governmentOffice = {
       type="application/ld+json"
       set:html={JSON.stringify(governmentOffice)}
     />
+    {
+      structuredData && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      )
+    }
   </head>
   <body id="top">
     <a class="skip-link" href="#main-content">Skip to main content</a>

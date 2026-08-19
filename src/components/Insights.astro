@@ -50,20 +50,32 @@ const { articles } = Astro.props;
               <div class="insight-card__links">
                 <a
                   class="insight-card__primary"
-                  href={article.data.pdfPath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Read PDF: ${article.data.title} (opens in a new tab)`}
+                  href={`/insights/${article.id}/`}
+                  aria-label={`Read article: ${article.data.title}`}
                 >
                   <svg
                     class="insight-card__icon"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
                   >
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
-                    <path d="M14 2v6h6M8 13h8M8 17h8" />
+                    <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5Z" />
+                    <path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5a2.5 2.5 0 0 1 2.5 2.5Z" />
                   </svg>
-                  Read PDF
+                  Read article
+                </a>
+                <a
+                  href={article.data.pdfPath}
+                  download
+                  aria-label={`Download PDF: ${article.data.title}`}
+                >
+                  Download PDF
+                  <svg
+                    class="insight-card__icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+                  </svg>
                 </a>
                 <a
                   href={article.data.sourceUrl}
@@ -82,8 +94,7 @@ const { articles } = Astro.props;
                 </a>
               </div>
               <span class="insight-card__document">
-                {article.data.pageCount}{" "}
-                {article.data.pageCount === 1 ? "page" : "pages"} · PDF
+                {article.data.readingMinutes} min read · PDF available
               </span>
             </div>
           </article>

@@ -1,0 +1,363 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import TaisBand from "../../components/TaisBand.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("insights");
+
+  return articles.map((article) => ({
+    params: { id: article.id },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<"insights">;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const articleUrl = new URL(`/insights/${article.id}/`, Astro.site);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.data.title,
+  description: article.data.summary,
+  datePublished: article.data.dateTime,
+  author: {
+    "@type": "Person",
+    name: article.data.author,
+    jobTitle: "Honorary Consul of Timor-Leste",
+  },
+  publisher: {
+    "@type": "GovernmentOffice",
+    name: "Honorary Consulate of the Democratic Republic of Timor-Leste",
+  },
+  mainEntityOfPage: articleUrl.href,
+};
+---
+
+<BaseLayout
+  title={article.data.title}
+  description={article.data.summary}
+  ogType="article"
+  {structuredData}
+>
+  <article class="publication">
+    <TaisBand
+      pattern="stepped-lozenge"
+      colors={["ink", "morinda", "turmeric", "undyed"]}
+      height={32}
+    />
+
+    <header class="publication__header">
+      <div class="container publication__header-inner">
+        <a class="publication__back" href="/#insights">
+          <span aria-hidden="true">←</span> Back to Insights
+        </a>
+
+        <div class="publication__meta">
+          <span>{article.data.category}</span>
+          <time datetime={article.data.dateTime}>{article.data.dateLabel}</time>
+          <span>{article.data.readingMinutes} min read</span>
+        </div>
+
+        <h1>{article.data.title}</h1>
+        <p class="publication__summary">{article.data.summary}</p>
+        <p class="publication__byline">
+          By <strong>{article.data.author}</strong>, Honorary Consul of
+          Timor-Leste, Auckland
+        </p>
+      </div>
+    </header>
+
+    <div class="publication__body">
+      <div class="publication__rail" aria-hidden="true">
+        <span>8.5°S 125.7°E · Dili</span>
+        <span>36.8°S 174.7°E · Auckland</span>
+      </div>
+      <div class="publication__prose">
+        <Content />
+      </div>
+    </div>
+
+    <footer class="publication__footer">
+      <div class="publication__footer-inner">
+        <p class="eyebrow">Document options</p>
+        <h2>Continue with this publication</h2>
+        <div class="publication__actions">
+          <a class="button" href={article.data.pdfPath} download>
+            Download PDF
+          </a>
+          <a
+            class="publication__secondary"
+            href={article.data.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View original publication <span aria-hidden="true">↗</span>
+          </a>
+          <a class="publication__secondary" href="/#contact">
+            Contact the Consulate <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="publication__pdf-note">
+          PDF version: {article.data.pageCount}
+          {article.data.pageCount === 1 ? " page" : " pages"}
+        </p>
+      </div>
+    </footer>
+
+    <TaisBand
+      pattern="diamond"
+      colors={["morinda", "ink", "turmeric", "undyed"]}
+      height={32}
+    />
+  </article>
+</BaseLayout>
+
+<style>
+  .publication {
+    background: var(--undyed);
+    color: var(--ink);
+  }
+
+  .publication__header {
+    background: var(--indigo);
+    color: var(--undyed);
+  }
+
+  .publication__header-inner {
+    padding-block: var(--space-5) var(--space-7);
+  }
+
+  .publication__back {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--turmeric);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-underline-offset: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .publication__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--space-5);
+    color: var(--turmeric);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .publication__meta > *:not(:last-child)::after {
+    margin-left: var(--space-3);
+    color: color-mix(in srgb, var(--undyed) 42%, transparent);
+    content: "·";
+  }
+
+  .publication h1 {
+    max-width: 19ch;
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-5);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .publication__summary {
+    max-width: 48rem;
+    margin: var(--space-4) 0 0;
+    color: color-mix(in srgb, var(--undyed) 80%, transparent);
+    font-size: var(--text-1);
+  }
+
+  .publication__byline {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text--1);
+  }
+
+  .publication__byline strong {
+    color: var(--turmeric);
+    font-weight: 500;
+  }
+
+  .publication__body {
+    display: grid;
+    grid-template-columns: minmax(11rem, 1fr) minmax(0, 48rem) minmax(
+        2rem,
+        1fr
+      );
+    gap: var(--space-5);
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    margin-inline: auto;
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .publication__rail {
+    display: flex;
+    align-self: start;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: sticky;
+    top: 9rem;
+    color: var(--morinda);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  .publication__prose {
+    grid-column: 2;
+    font-size: var(--text-0);
+  }
+
+  .publication__prose :global(p) {
+    margin: 0 0 var(--space-3);
+  }
+
+  .publication__prose :global(p:first-child) {
+    font-family: var(--font-display);
+    font-size: var(--text-2);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.3;
+  }
+
+  .publication__prose :global(h2) {
+    margin: var(--space-6) 0 var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid color-mix(in srgb, var(--stone) 42%, transparent);
+    color: var(--indigo);
+    font-family: var(--font-display);
+    font-size: var(--text-3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.08;
+  }
+
+  .publication__prose :global(ul),
+  .publication__prose :global(ol) {
+    padding-left: var(--space-4);
+    margin: 0 0 var(--space-4);
+  }
+
+  .publication__prose :global(li) {
+    padding-left: var(--space-1);
+    margin-bottom: var(--space-2);
+  }
+
+  .publication__prose :global(a) {
+    color: var(--morinda);
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+  }
+
+  .publication__prose :global(h2:last-of-type + ol) {
+    color: var(--stone);
+    font-size: var(--text--1);
+  }
+
+  .publication__footer {
+    background: var(--ink);
+    color: var(--undyed);
+  }
+
+  .publication__footer-inner {
+    width: min(100% - (2 * var(--page-gutter)), var(--content-wide));
+    margin-inline: auto;
+    padding-block: var(--space-6);
+  }
+
+  .publication__footer .eyebrow {
+    color: var(--turmeric);
+  }
+
+  .publication__footer h2 {
+    max-width: 18ch;
+    margin: var(--space-1) 0 var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: var(--line-heading);
+  }
+
+  .publication__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .publication__secondary {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    text-underline-offset: 0.25em;
+  }
+
+  .publication__pdf-note {
+    margin: var(--space-4) 0 0;
+    color: color-mix(in srgb, var(--undyed) 62%, transparent);
+    font-family: var(--font-utility);
+    font-size: var(--text--2);
+    letter-spacing: var(--tracking-utility);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 62rem) {
+    .publication__body {
+      grid-template-columns: minmax(0, 48rem);
+      justify-content: center;
+    }
+
+    .publication__rail {
+      display: none;
+    }
+
+    .publication__prose {
+      grid-column: 1;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .publication__header-inner {
+      padding-block: var(--space-4) var(--space-6);
+    }
+
+    .publication h1 {
+      font-size: var(--text-4);
+    }
+
+    .publication__meta {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .publication__meta > *:not(:last-child)::after {
+      content: none;
+    }
+
+    .publication__body {
+      gap: 0;
+      padding-block: var(--space-5) var(--space-7);
+    }
+
+    .publication__actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -98,6 +98,7 @@ const insights = defineCollection({
     sourceUrl: z.string().url(),
     pdfPath: z.string(),
     pageCount: z.number().int().positive(),
+    readingMinutes: z.number().int().positive(),
     featured: z.boolean().default(false),
   }),
 });
