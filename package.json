@@ -18,7 +18,7 @@
     "@fontsource/public-sans": "^5.2.6",
     "@lucide/astro": "^1.28.0",
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.6",
+    "astro": "^7.2.6",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
