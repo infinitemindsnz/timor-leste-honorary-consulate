@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "contractId": "timor-leste-honorary-consulate.registration.v1",
+  "comment": "Names every content source the renderer reads so a publisher outside this repository can learn the shape without executing it. It grants nothing.",
+  "sections": {
+    "glob": "src/content/sections/**/*.md",
+    "format": "markdown+frontmatter",
+    "loader": "src/content.config.ts",
+    "comment": "Per-page section records (page, order, eyebrow, title, lede, pattern, surface, optional facts/timeline/stats/services) with a markdown body. Frontmatter is Zod-validated by Astro's content layer."
+  },
+  "insights": {
+    "glob": "src/content/insights/**/*.md",
+    "format": "markdown+frontmatter",
+    "loader": "src/content.config.ts",
+    "comment": "Authored publications with a PDF and hero image per record. Media-bearing; not writable by any registration-grade operation."
+  },
+  "pages": {
+    "glob": "src/content/pages/**/*.md",
+    "format": "markdown+frontmatter",
+    "loader": "src/content.config.ts",
+    "comment": "Only home.md today, marked draft: true."
+  },
+  "publicFactsInComponentCode": {
+    "paths": [
+      "src/components/SinglePageContact.astro",
+      "src/components/Footer.astro",
+      "src/layouts/BaseLayout.astro",
+      "src/pages/index.astro"
+    ],
+    "comment": "Phone, email, street address, jurisdiction note, and the Wellington embassy details are hard-coded here. They are NOT a content source and are unwritable until moved into one data record."
+  },
+  "renderer": {
+    "framework": "astro@5 static",
+    "styling": "tailwindcss@4 + src/styles/tokens.css",
+    "buildCommand": "npm run build",
+    "checkCommand": "npm run lint",
+    "outputDirectory": "dist",
+    "site": "https://www.consulatetimorleste.co.nz"
+  },
+  "hosting": {
+    "kind": "cloudflare_pages",
+    "projectName": "timor-leste-consulate-auckland",
+    "productionBranch": "main",
+    "deployCommand": "npm run deploy:cloudflare",
+    "comment": "Deployed by CLI push of dist/, not by a git integration. The Business Agent publisher cannot settle Cloudflare Pages in its current build; publication requires a Vercel project or a recorded-envelope Cloudflare adapter."
+  },
+  "writablePolicy": "governance/writable-paths.v1.json",
+  "approvalPolicy": "governance/approval-policy.v1.json"
+}

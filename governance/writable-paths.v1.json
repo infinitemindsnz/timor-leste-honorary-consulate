@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "contractId": "timor-leste-honorary-consulate.registration.v1",
+  "default": "deny",
+  "registrationOnly": true,
+  "files": [],
+  "comment": "REGISTRATION-ONLY. This contract lets the Business Agent register the consulate website (name, live URL, read-only) and verify that this exact file is what the pinned commit carries. It grants NO write authority: every proposal against this site is refused before anything durable exists. It becomes a writable contract only through a reviewed version 2 that (1) moves the public facts out of component code into a data file the renderer reads, (2) declares each coupled occurrence set and its materialiser, and (3) is pinned by a deployment whose hosting the publisher can settle.",
+  "documentedOperations": [
+    {
+      "operationKind": "public_phone_patch",
+      "permitted": false,
+      "comment": "The consulate phone (+64 21 021 68888) is rendered from THREE component-code occurrences (src/components/SinglePageContact.astro, src/components/Footer.astro, src/layouts/BaseLayout.astro JSON-LD) plus the Wellington embassy phone in two more. Until those move into one data record with a declared coupled set, no phone operation is safe."
+    },
+    {
+      "operationKind": "public_email_patch",
+      "permitted": false,
+      "comment": "dave.tlconsulhonorario@gmail.com appears in the contact section, the footer, and the JSON-LD; the embassy address in two more places. Same precondition as the phone."
+    },
+    {
+      "operationKind": "public_opening_hours_replace",
+      "permitted": false,
+      "comment": "The site publishes no structured opening-hours record. Manufacturing one is a content decision for the Consulate, not a policy entry."
+    },
+    {
+      "operationKind": "site_text_patch",
+      "permitted": false,
+      "comment": "Section copy lives in src/content/sections/**/*.md frontmatter and bodies (Zod-validated by src/content.config.ts). A future text-surface catalogue could address frontmatter scalars (title, lede, facts[].text); markdown BODIES and the Tetum eyebrows need their own reviewed grammar."
+    },
+    {
+      "operationKind": "article_publish",
+      "permitted": false,
+      "comment": "src/content/insights/*.md requires pdfPath, pageCount, readingMinutes and a heroImage — media-bearing by construction. Create-only authored insights need a media-admission contract first."
+    }
+  ]
+}
