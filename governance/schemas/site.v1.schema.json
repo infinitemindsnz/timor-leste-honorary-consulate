@@ -1,8 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://www.consulatetimorleste.co.nz/governance/schemas/site.v1.schema.json",
-  "title": "Honorary Consulate governed site record",
-  "description": "Platform-facing mirror of src/data/schema.ts. Unknown keys fail. rows[0] is the governed Mobile row (tel: href), rows[1] the governed Email row (mailto: href equal to its value).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,7 +6,11 @@
     "contact",
     "address",
     "embassy",
-    "footer"
+    "footer",
+    "hero",
+    "doorways",
+    "chapters",
+    "insights"
   ],
   "properties": {
     "brand": {
@@ -74,116 +74,33 @@
         },
         "rows": {
           "type": "array",
-          "minItems": 3,
-          "maxItems": 3,
-          "prefixItems": [
-            {
-              "allOf": [
-                {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "label",
-                    "value",
-                    "href"
-                  ],
-                  "properties": {
-                    "label": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    },
-                    "value": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    },
-                    "href": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    }
-                  }
-                },
-                {
-                  "properties": {
-                    "label": {
-                      "const": "Mobile"
-                    },
-                    "href": {
-                      "pattern": "^tel:\\+[1-9][0-9]{6,14}$"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "label",
-                    "value",
-                    "href"
-                  ],
-                  "properties": {
-                    "label": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    },
-                    "value": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    },
-                    "href": {
-                      "type": "string",
-                      "minLength": 1,
-                      "pattern": "^\\S(?:.*\\S)?$"
-                    }
-                  }
-                },
-                {
-                  "properties": {
-                    "label": {
-                      "const": "Email"
-                    },
-                    "href": {
-                      "pattern": "^mailto:"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "value",
-                "href"
-              ],
-              "properties": {
-                "label": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "^\\S(?:.*\\S)?$"
-                },
-                "value": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "^\\S(?:.*\\S)?$"
-                },
-                "href": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "^\\S(?:.*\\S)?$"
-                }
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "value",
+              "href"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
               }
             }
-          ]
+          }
         },
         "visitNote": {
           "type": "string",
@@ -245,7 +162,9 @@
           "pattern": "^\\S(?:.*\\S)?$"
         },
         "addressCountry": {
-          "const": "NZ"
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
         },
         "footerLine": {
           "type": "string",
@@ -375,7 +294,6 @@
         "coordinates": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 4,
           "items": {
             "type": "string",
             "minLength": 1,
@@ -388,6 +306,181 @@
           "pattern": "^\\S(?:.*\\S)?$"
         }
       }
+    },
+    "hero": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "headlineLines",
+        "lede",
+        "ctas",
+        "imageCaption"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "headlineLines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^\\S(?:.*\\S)?$"
+          }
+        },
+        "lede": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "ctas": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "href"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              }
+            }
+          }
+        },
+        "imageCaption": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        }
+      }
+    },
+    "doorways": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "items"
+      ],
+      "properties": {
+        "heading": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "titleLines",
+              "body",
+              "action",
+              "href"
+            ],
+            "properties": {
+              "titleLines": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^\\S(?:.*\\S)?$"
+                }
+              },
+              "body": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "chapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consularServices"
+      ],
+      "properties": {
+        "consularServices": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eyebrow",
+            "heading",
+            "intro"
+          ],
+          "properties": {
+            "eyebrow": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            "heading": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            "intro": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^\\S(?:.*\\S)?$"
+            }
+          }
+        }
+      }
+    },
+    "insights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "heading"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "heading": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S(?:.*\\S)?$"
+        }
+      }
     }
-  }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.consulatetimorleste.co.nz/governance/schemas/site.v1.schema.json",
+  "title": "Honorary Consulate governed site record",
+  "description": "Platform-facing mirror of src/data/schema.ts siteSchema. Unknown keys fail. rows[0] is the governed Mobile row (tel: href), rows[1] the governed Email row (mailto: href equal to its value)."
 }

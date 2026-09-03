@@ -4,6 +4,10 @@
   "changeLog": [
     {
       "version": 6,
+      "comment": "TEXT SURFACES (contract v1.1). Adds `site_text_patch` over the two governed data files: src/data/site.yaml (homepage hero, doorways, contact intro, jurisdiction note, embassy referral copy, chapter and insights headings, footer identity) and src/data/sections.yaml (every section's eyebrow, title, lede, timeline entries, statistics, service cards and the consul profile). 98 enumerated single-line surfaces; no patterned page records (`patternedSurfaces: null`). Hrefs, CTA labels, icons, the phone and email rows and the Wellington embassy contact facts stay outside the text grammar. Markdown section bodies remain human-owned."
+    },
+    {
+      "version": 6,
       "comment": "WRITABLE VERSION 1 (registration-only contract retired). The consulate's public phone and public email are now single governed facts in src/data/site.yaml, rendered from that one record by the contact section, the footer and the JSON-LD (src/lib/content.ts). This contract declares exactly TWO operations: the closed public_phone_patch coupled set (two pointers, one file) and the schema-v6 public_email_patch (two pointers, one file). It declares NO text-surface, link, typed-page, opening-hours or article operation: section copy lives in markdown frontmatter the text-patch grammar cannot address, navigation is same-page anchors rather than published routes, the site has no typed-page renderer, publishes no opening-hours fact, and its insights are media-bearing PDFs. Each is documented below as denied with its reason, so a proposal for any of them is refused before anything durable exists."
     }
   ],
@@ -137,11 +141,6 @@
       "comment": "The withdrawn legacy hours operation. The site publishes no opening-hours statement; nothing here was ever a target for it."
     },
     {
-      "operationKind": "site_text_patch",
-      "permitted": false,
-      "comment": "Section copy lives in src/content/sections/**/*.md frontmatter and markdown bodies; the text-patch grammar addresses YAML data pointers and a pages-record layout this site does not have. A text-surface catalogue over src/data/site.yaml prose is a reviewed version 2."
-    },
-    {
       "operationKind": "site_link_patch",
       "permitted": false,
       "comment": "Primary navigation is same-page anchors (#opportunity, #consular-services, …), not published routes; the link materialiser resolves internal destinations against published routes only."
@@ -264,5 +263,642 @@
         "/contact/rows/1/href"
       ]
     }
+  },
+  "textPatch": {
+    "operationKind": "site_text_patch",
+    "proposalField": "site_text",
+    "artifactClass": "site_text_patch",
+    "writeMode": "atomic",
+    "comment": "One governed candidate per request: every requested surface write lands in one commit across at most the two content-model files, or nothing lands. A caller addresses stable surface ids from `enumeratedSurfaces`; every id carries its file, JSON pointer and human meaning so the review always shows file, pointer, before and after. Surface ids are the kebab-cased pointer path under `site.` or `section.<record>.`. There is no page-record file on this site, so `patternedSurfaces` is null and only the enumerated catalogue is addressable.",
+    "constraints": {
+      "maxSurfacesPerCandidate": 12,
+      "maxValueBytes": 2048,
+      "maxTotalValueBytes": 16384,
+      "valueNewlines": "forbidden",
+      "scalarStyles": [
+        "PLAIN",
+        "QUOTE_SINGLE",
+        "QUOTE_DOUBLE"
+      ],
+      "preserveLiteralOccurrences": [
+        {
+          "literal": "+64 21 021 68888",
+          "reason": "The public display phone. A text patch may rewrite prose but each touched file's occurrence count must be unchanged post-write; only the atomic public_phone_patch may change the number."
+        },
+        {
+          "literal": "tel:+642102168888",
+          "reason": "The dialable phone href literal. Same rule."
+        }
+      ]
+    },
+    "files": [
+      "src/data/site.yaml",
+      "src/data/sections.yaml"
+    ],
+    "enumeratedSurfaces": [
+      {
+        "surfaceId": "site.brand.name",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/brand/name",
+        "meaning": "Homepage brand › name"
+      },
+      {
+        "surfaceId": "site.brand.short-name",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/brand/shortName",
+        "meaning": "Homepage brand › short name"
+      },
+      {
+        "surfaceId": "site.brand.region",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/brand/region",
+        "meaning": "Homepage brand › region"
+      },
+      {
+        "surfaceId": "site.brand.area-served",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/brand/areaServed",
+        "meaning": "Homepage brand › area served"
+      },
+      {
+        "surfaceId": "site.contact.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/eyebrow",
+        "meaning": "Homepage contact › eyebrow"
+      },
+      {
+        "surfaceId": "site.contact.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/heading",
+        "meaning": "Homepage contact › heading"
+      },
+      {
+        "surfaceId": "site.contact.intro",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/intro",
+        "meaning": "Homepage contact › intro"
+      },
+      {
+        "surfaceId": "site.contact.rows.2.value",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/rows/2/value",
+        "meaning": "Homepage contact › rows › 2 › value"
+      },
+      {
+        "surfaceId": "site.contact.visit-note",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/visitNote",
+        "meaning": "Homepage contact › visit note"
+      },
+      {
+        "surfaceId": "site.contact.jurisdiction.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/jurisdiction/eyebrow",
+        "meaning": "Homepage contact › jurisdiction › eyebrow"
+      },
+      {
+        "surfaceId": "site.contact.jurisdiction.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/jurisdiction/heading",
+        "meaning": "Homepage contact › jurisdiction › heading"
+      },
+      {
+        "surfaceId": "site.contact.jurisdiction.body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/contact/jurisdiction/body",
+        "meaning": "Homepage contact › jurisdiction › body"
+      },
+      {
+        "surfaceId": "site.address.street-address",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/address/streetAddress",
+        "meaning": "Homepage address › street address"
+      },
+      {
+        "surfaceId": "site.address.address-locality",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/address/addressLocality",
+        "meaning": "Homepage address › address locality"
+      },
+      {
+        "surfaceId": "site.address.address-region",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/address/addressRegion",
+        "meaning": "Homepage address › address region"
+      },
+      {
+        "surfaceId": "site.address.footer-line",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/address/footerLine",
+        "meaning": "Homepage address › footer line"
+      },
+      {
+        "surfaceId": "site.embassy.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/embassy/eyebrow",
+        "meaning": "Homepage embassy › eyebrow"
+      },
+      {
+        "surfaceId": "site.embassy.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/embassy/heading",
+        "meaning": "Homepage embassy › heading"
+      },
+      {
+        "surfaceId": "site.embassy.body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/embassy/body",
+        "meaning": "Homepage embassy › body"
+      },
+      {
+        "surfaceId": "site.embassy.referral-body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/embassy/referralBody",
+        "meaning": "Homepage embassy › referral body"
+      },
+      {
+        "surfaceId": "site.embassy.footer-body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/embassy/footerBody",
+        "meaning": "Homepage embassy › footer body"
+      },
+      {
+        "surfaceId": "site.footer.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/eyebrow",
+        "meaning": "Homepage footer › eyebrow"
+      },
+      {
+        "surfaceId": "site.footer.title",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/title",
+        "meaning": "Homepage footer › title"
+      },
+      {
+        "surfaceId": "site.footer.region",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/region",
+        "meaning": "Homepage footer › region"
+      },
+      {
+        "surfaceId": "site.footer.contact-heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/contactHeading",
+        "meaning": "Homepage footer › contact heading"
+      },
+      {
+        "surfaceId": "site.footer.embassy-heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/embassyHeading",
+        "meaning": "Homepage footer › embassy heading"
+      },
+      {
+        "surfaceId": "site.footer.coordinates.0",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/coordinates/0",
+        "meaning": "Homepage footer › coordinates › 0"
+      },
+      {
+        "surfaceId": "site.footer.coordinates.1",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/coordinates/1",
+        "meaning": "Homepage footer › coordinates › 1"
+      },
+      {
+        "surfaceId": "site.footer.copyright-holder",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/footer/copyrightHolder",
+        "meaning": "Homepage footer › copyright holder"
+      },
+      {
+        "surfaceId": "site.hero.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/eyebrow",
+        "meaning": "Homepage hero › eyebrow"
+      },
+      {
+        "surfaceId": "site.hero.headline-lines.0",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/headlineLines/0",
+        "meaning": "Homepage hero › headline lines › 0"
+      },
+      {
+        "surfaceId": "site.hero.headline-lines.1",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/headlineLines/1",
+        "meaning": "Homepage hero › headline lines › 1"
+      },
+      {
+        "surfaceId": "site.hero.headline-lines.2",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/headlineLines/2",
+        "meaning": "Homepage hero › headline lines › 2"
+      },
+      {
+        "surfaceId": "site.hero.lede",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/lede",
+        "meaning": "Homepage hero › lede"
+      },
+      {
+        "surfaceId": "site.hero.image-caption",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/hero/imageCaption",
+        "meaning": "Homepage hero › image caption"
+      },
+      {
+        "surfaceId": "site.doorways.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/heading",
+        "meaning": "Homepage doorways › heading"
+      },
+      {
+        "surfaceId": "site.doorways.items.0.title-lines.0",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/0/titleLines/0",
+        "meaning": "Homepage doorways › items › 0 › title lines › 0"
+      },
+      {
+        "surfaceId": "site.doorways.items.0.title-lines.1",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/0/titleLines/1",
+        "meaning": "Homepage doorways › items › 0 › title lines › 1"
+      },
+      {
+        "surfaceId": "site.doorways.items.0.body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/0/body",
+        "meaning": "Homepage doorways › items › 0 › body"
+      },
+      {
+        "surfaceId": "site.doorways.items.0.action",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/0/action",
+        "meaning": "Homepage doorways › items › 0 › action"
+      },
+      {
+        "surfaceId": "site.doorways.items.1.title-lines.0",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/1/titleLines/0",
+        "meaning": "Homepage doorways › items › 1 › title lines › 0"
+      },
+      {
+        "surfaceId": "site.doorways.items.1.title-lines.1",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/1/titleLines/1",
+        "meaning": "Homepage doorways › items › 1 › title lines › 1"
+      },
+      {
+        "surfaceId": "site.doorways.items.1.body",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/1/body",
+        "meaning": "Homepage doorways › items › 1 › body"
+      },
+      {
+        "surfaceId": "site.doorways.items.1.action",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/doorways/items/1/action",
+        "meaning": "Homepage doorways › items › 1 › action"
+      },
+      {
+        "surfaceId": "site.chapters.consular-services.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/chapters/consularServices/eyebrow",
+        "meaning": "Homepage chapters › consular services › eyebrow"
+      },
+      {
+        "surfaceId": "site.chapters.consular-services.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/chapters/consularServices/heading",
+        "meaning": "Homepage chapters › consular services › heading"
+      },
+      {
+        "surfaceId": "site.chapters.consular-services.intro",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/chapters/consularServices/intro",
+        "meaning": "Homepage chapters › consular services › intro"
+      },
+      {
+        "surfaceId": "site.insights.eyebrow",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/insights/eyebrow",
+        "meaning": "Homepage insights › eyebrow"
+      },
+      {
+        "surfaceId": "site.insights.heading",
+        "file": "src/data/site.yaml",
+        "jsonPointer": "/insights/heading",
+        "meaning": "Homepage insights › heading"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/eyebrow",
+        "meaning": "Section consular-services-01-services eyebrow"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/title",
+        "meaning": "Section consular-services-01-services title"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.lede",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/lede",
+        "meaning": "Section consular-services-01-services lede"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.0.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/0/title",
+        "meaning": "Section consular-services-01-services services › 0 › title"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.0.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/0/text",
+        "meaning": "Section consular-services-01-services services › 0 › text"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.1.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/1/title",
+        "meaning": "Section consular-services-01-services services › 1 › title"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.1.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/1/text",
+        "meaning": "Section consular-services-01-services services › 1 › text"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.2.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/2/title",
+        "meaning": "Section consular-services-01-services services › 2 › title"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.2.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/2/text",
+        "meaning": "Section consular-services-01-services services › 2 › text"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.3.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/3/title",
+        "meaning": "Section consular-services-01-services services › 3 › title"
+      },
+      {
+        "surfaceId": "section.consular-services-01-services.services.3.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-01-services/services/3/text",
+        "meaning": "Section consular-services-01-services services › 3 › text"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/eyebrow",
+        "meaning": "Section consular-services-02-consul eyebrow"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/title",
+        "meaning": "Section consular-services-02-consul title"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.lede",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/lede",
+        "meaning": "Section consular-services-02-consul lede"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile-heading",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profileHeading",
+        "meaning": "Section consular-services-02-consul profile heading"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.0.term",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/0/term",
+        "meaning": "Section consular-services-02-consul profile › 0 › term"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.0.detail",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/0/detail",
+        "meaning": "Section consular-services-02-consul profile › 0 › detail"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.1.term",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/1/term",
+        "meaning": "Section consular-services-02-consul profile › 1 › term"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.1.detail",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/1/detail",
+        "meaning": "Section consular-services-02-consul profile › 1 › detail"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.2.term",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/2/term",
+        "meaning": "Section consular-services-02-consul profile › 2 › term"
+      },
+      {
+        "surfaceId": "section.consular-services-02-consul.profile.2.detail",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-02-consul/profile/2/detail",
+        "meaning": "Section consular-services-02-consul profile › 2 › detail"
+      },
+      {
+        "surfaceId": "section.consular-services-03-wellington.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-03-wellington/eyebrow",
+        "meaning": "Section consular-services-03-wellington eyebrow"
+      },
+      {
+        "surfaceId": "section.consular-services-03-wellington.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-03-wellington/title",
+        "meaning": "Section consular-services-03-wellington title"
+      },
+      {
+        "surfaceId": "section.consular-services-03-wellington.lede",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/consular-services-03-wellington/lede",
+        "meaning": "Section consular-services-03-wellington lede"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/eyebrow",
+        "meaning": "Section opportunity-01-asean eyebrow"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/title",
+        "meaning": "Section opportunity-01-asean title"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.lede",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/lede",
+        "meaning": "Section opportunity-01-asean lede"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.0.date",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/0/date",
+        "meaning": "Section opportunity-01-asean timeline › 0 › date"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.0.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/0/title",
+        "meaning": "Section opportunity-01-asean timeline › 0 › title"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.0.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/0/text",
+        "meaning": "Section opportunity-01-asean timeline › 0 › text"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.1.date",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/1/date",
+        "meaning": "Section opportunity-01-asean timeline › 1 › date"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.1.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/1/title",
+        "meaning": "Section opportunity-01-asean timeline › 1 › title"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.1.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/1/text",
+        "meaning": "Section opportunity-01-asean timeline › 1 › text"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.2.date",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/2/date",
+        "meaning": "Section opportunity-01-asean timeline › 2 › date"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.2.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/2/title",
+        "meaning": "Section opportunity-01-asean timeline › 2 › title"
+      },
+      {
+        "surfaceId": "section.opportunity-01-asean.timeline.2.text",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-01-asean/timeline/2/text",
+        "meaning": "Section opportunity-01-asean timeline › 2 › text"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/eyebrow",
+        "meaning": "Section opportunity-02-window eyebrow"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/title",
+        "meaning": "Section opportunity-02-window title"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.0.value",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/0/value",
+        "meaning": "Section opportunity-02-window stats › 0 › value"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.0.caption",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/0/caption",
+        "meaning": "Section opportunity-02-window stats › 0 › caption"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.1.value",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/1/value",
+        "meaning": "Section opportunity-02-window stats › 1 › value"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.1.caption",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/1/caption",
+        "meaning": "Section opportunity-02-window stats › 1 › caption"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.2.value",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/2/value",
+        "meaning": "Section opportunity-02-window stats › 2 › value"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.2.caption",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/2/caption",
+        "meaning": "Section opportunity-02-window stats › 2 › caption"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.3.value",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/3/value",
+        "meaning": "Section opportunity-02-window stats › 3 › value"
+      },
+      {
+        "surfaceId": "section.opportunity-02-window.stats.3.caption",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-02-window/stats/3/caption",
+        "meaning": "Section opportunity-02-window stats › 3 › caption"
+      },
+      {
+        "surfaceId": "section.opportunity-03-sectors.eyebrow",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-03-sectors/eyebrow",
+        "meaning": "Section opportunity-03-sectors eyebrow"
+      },
+      {
+        "surfaceId": "section.opportunity-03-sectors.title",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-03-sectors/title",
+        "meaning": "Section opportunity-03-sectors title"
+      },
+      {
+        "surfaceId": "section.opportunity-03-sectors.lede",
+        "file": "src/data/sections.yaml",
+        "jsonPointer": "/opportunity-03-sectors/lede",
+        "meaning": "Section opportunity-03-sectors lede"
+      }
+    ],
+    "patternedSurfaces": null,
+    "neverWritableByTextPatch": [
+      {
+        "jsonPointer": "src/data/site.yaml#/contact/rows/0/*, /contact/rows/1/*",
+        "reason": "The governed phone and email rows belong exclusively to public_phone_patch and public_email_patch; their labels are identity assertions."
+      },
+      {
+        "jsonPointer": "src/data/site.yaml#/embassy/phone/*, /embassy/email/*",
+        "reason": "The Wellington embassy contact facts are coupled display/href pairs, not prose."
+      },
+      {
+        "jsonPointer": "src/data/*.yaml#**/href, **/label, **/icon",
+        "reason": "Structural: destinations, CTA labels and icon names are never free text."
+      }
+    ]
   }
 }

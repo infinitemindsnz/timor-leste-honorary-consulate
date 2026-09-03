@@ -27,27 +27,21 @@ const insights = (await getCollection("insights")).sort(
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero__grid">
       <div class="hero__message">
-        <p class="hero__eyebrow">
-          Honorary Consulate · Auckland &amp; North Island
-        </p>
+        <p class="hero__eyebrow">{site.hero.eyebrow}</p>
         <h1 id="hero-title">
-          Two nations.<br />
-          One enduring<br />
-          relationship.
+          {site.hero.headlineLines.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))}
         </h1>
         <span class="hero__rule" aria-hidden="true"></span>
-        <p class="hero__lede">
-          The Honorary Consulate connects Timor-Leste with Auckland and the
-          North Island by supporting Timorese nationals, strengthening cultural
-          ties, and fostering enduring partnerships and economic pathways for
-          New Zealand investors and businesses to engage directly with
-          Timor-Leste's developing sectors and post-ASEAN accession economy.
-        </p>
+        <p class="hero__lede">{site.hero.lede}</p>
         <div class="hero__actions">
-          <a class="button" href="#contact">Contact the Consulate</a>
-          <a class="button button--outline" href="#consular-services">
-            Consular services
-          </a>
+          {site.hero.ctas.map((cta, index) => (
+            <a class:list={["button", index > 0 && "button--outline"]} href={cta.href}>{cta.label}</a>
+          ))}
         </div>
       </div>
 
@@ -93,7 +87,7 @@ const insights = (await getCollection("insights")).sort(
             decoding="async"
           />
         </picture>
-        <figcaption>Dili coast · Timor-Leste</figcaption>
+        <figcaption>{site.hero.imageCaption}</figcaption>
       </figure>
     </div>
   </section>
@@ -107,32 +101,23 @@ const insights = (await getCollection("insights")).sort(
 
   <section class="doorways" aria-labelledby="doorways-title">
     <div class="container">
-      <h2 class="visually-hidden" id="doorways-title">Begin here</h2>
-
+      <h2 class="visually-hidden" id="doorways-title">{site.doorways.heading}</h2>
       <div class="doorway-list">
-        <a class="doorway" href="#consular-services">
-          <span class="doorway__rule" aria-hidden="true"></span>
-          <h3>Assistance for<br />Timorese nationals</h3>
-          <p>
-            Find support, referrals and the right diplomatic contact for your
-            enquiry.
-          </p>
-          <span class="doorway__action"
-            >View services <span aria-hidden="true">→</span></span
-          >
-        </a>
-
-        <a class="doorway" href="#opportunity">
-          <span class="doorway__rule" aria-hidden="true"></span>
-          <h3>Trade and<br />investment</h3>
-          <p>
-            Explore thoughtful partnerships between New Zealand experience and
-            Timor-Leste’s next chapter.
-          </p>
-          <span class="doorway__action"
-            >Explore opportunities <span aria-hidden="true">→</span></span
-          >
-        </a>
+        {site.doorways.items.map((doorway) => (
+          <a class="doorway" href={doorway.href}>
+            <span class="doorway__rule" aria-hidden="true"></span>
+            <h3>
+              {doorway.titleLines.map((line, index) => (
+                <>
+                  {index > 0 && <br />}
+                  {line}
+                </>
+              ))}
+            </h3>
+            <p>{doorway.body}</p>
+            <span class="doorway__action">{doorway.action} <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
       </div>
 
       <aside class="embassy-referral" aria-labelledby="embassy-title">
@@ -154,12 +139,9 @@ const insights = (await getCollection("insights")).sort(
   <div id="consular-services" class="chapter">
     <header class="chapter-heading">
       <div class="container chapter-heading__inner">
-        <p class="eyebrow">AJUDA / Guidance</p>
-        <h2>Consular services</h2>
-        <p>
-          A first point of contact for Timorese nationals, and a bridge between
-          Timor-Leste and communities across Auckland and the North Island.
-        </p>
+        <p class="eyebrow">{site.chapters.consularServices.eyebrow}</p>
+        <h2>{site.chapters.consularServices.heading}</h2>
+        <p>{site.chapters.consularServices.intro}</p>
       </div>
     </header>
     <ContentSections sections={consularSections} />

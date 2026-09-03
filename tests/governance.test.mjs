@@ -104,7 +104,7 @@ test("the public email occurs only at its two declared pointers", () => {
 });
 
 test("the approval ceremony binds exactly the declared operations", () => {
-  const declared = new Set(["public_phone_patch", "public_email_patch"]);
+  const declared = new Set(["public_phone_patch", "public_email_patch", "site_text_patch"]);
   assert.deepEqual(new Set(approval.operations.map((entry) => entry.operationKind)), declared);
   assert.equal(approval.default, "deny");
   assert.equal(approval.naturalLanguageApproval, "deny");
@@ -112,7 +112,7 @@ test("the approval ceremony binds exactly the declared operations", () => {
 });
 
 test("no undeclared operation block exists and every documented operation stays denied", () => {
-  for (const key of ["textPatch", "linkPatch", "typedPageCreate", "publicOpeningHoursReplace", "articlePublish"]) {
+  for (const key of ["linkPatch", "typedPageCreate", "publicOpeningHoursReplace", "articlePublish"]) {
     assert.equal(key in writable, false, `${key} must not be declared by this contract version`);
   }
   assert.equal(writable.default, "deny");
@@ -127,5 +127,39 @@ test("components render the governed facts from the record, never from literals"
     assert.equal(text.includes(site.contact.rows[0].value), false, `${rel} hardcodes the phone`);
     assert.equal(text.includes(site.contact.rows[1].value), false, `${rel} hardcodes the email`);
     assert.equal(text.includes("lib/content"), true, `${rel} must read src/lib/content.ts`);
+  }
+});
+
+test("every catalogued text surface resolves to a single-line string in its governed file, and none is a structural or governed-fact pointer", () => {
+  const text = writable.textPatch;
+  assert.equal(text.patternedSurfaces, null);
+  assert.deepEqual(text.files, ["src/data/site.yaml", "src/data/sections.yaml"]);
+  const docs = { "src/data/site.yaml": site, "src/data/sections.yaml": parseYaml(readFileSync(path.join(root, "src/data/sections.yaml"), "utf8")) };
+  const ids = new Set();
+  const forbiddenTail = /\/(href|ctaHref|kind|variant|icon|external|number|src|width|height|label|linkLabel|ctaLabel)$/;
+  for (const surface of text.enumeratedSurfaces) {
+    assert.equal(ids.has(surface.surfaceId), false, `duplicate ${surface.surfaceId}`); ids.add(surface.surfaceId);
+    assert.match(surface.surfaceId, /^[a-z0-9.-]{1,120}$/);
+    assert.equal(forbiddenTail.test(surface.jsonPointer), false, surface.surfaceId);
+    assert.equal(/^\/contact\/rows\/[01]\//.test(surface.jsonPointer) || /^\/embassy\/(phone|email)\//.test(surface.jsonPointer), false, surface.surfaceId);
+    const value = resolvePointer(docs[surface.file], surface.jsonPointer);
+    assert.equal(typeof value, "string", surface.surfaceId);
+    assert.equal(value.includes("\n"), false, surface.surfaceId);
+  }
+  assert.ok(text.enumeratedSurfaces.length >= 60);
+  for (const literal of text.constraints.preserveLiteralOccurrences.map((entry) => entry.literal)) {
+    assert.ok(scan.expectedOccurrences.some((entry) => entry.literal === literal), `${literal} must be governed by the closed-set scan`);
+  }
+});
+
+test("every section markdown file has a governed record and carries only structure", () => {
+  const sections = parseYaml(readFileSync(path.join(root, "src/data/sections.yaml"), "utf8"));
+  const dir = path.join(root, "src/content/sections");
+  for (const rel of walkFiles(dir, new Set(), dir).filter((name) => name.endsWith(".md"))) {
+    const key = rel.replace(/\.md$/, "").split("/").join("-");
+    assert.ok(sections[key], `no record for ${rel}`);
+    const front = readFileSync(path.join(dir, rel), "utf8").split("\n---\n")[0].replace(/^---\n/, "");
+    const keys = Object.keys(parseYaml(front)).sort();
+    assert.deepEqual(keys.filter((k) => !["page", "order", "pattern", "surface"].includes(k)), [], `${rel} still carries copy in frontmatter`);
   }
 });

@@ -1,9 +1,6 @@
 ---
 page: consular-services
 order: 2
-eyebrow: "KÓNSUL / The Consul"
-title: "Dave Ananth"
-lede: "The first Honorary Consul for the Democratic Republic of Timor-Leste covering Auckland and the North Island."
 pattern: stepped-lozenge
 surface: light
 ---

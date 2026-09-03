@@ -1,9 +1,6 @@
 ---
 page: opportunity
 order: 3
-eyebrow: "SETORES / Sectors"
-title: "Where relationships can grow"
-lede: "New Zealand capability aligns naturally with several Timorese development priorities."
 pattern: chevron
 surface: light
 ---

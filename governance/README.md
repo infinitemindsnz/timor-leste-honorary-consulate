@@ -1,8 +1,8 @@
-# Governed publication contract — writable version 1
+# Governed publication contract — writable version 1.1
 
-This directory lets the Business Agent publisher change exactly two public facts on this
-website through the authenticated approval ceremony, and refuse everything else with a
-closed reason. Authority lives in two machine-parsed files; the rest documents them.
+This directory lets the Business Agent publisher change the consulate's two public facts and
+every single-line text surface on this website through the authenticated approval ceremony,
+and refuse everything else with a closed reason. Authority lives in two machine-parsed files; the rest documents them.
 
 | File | Role |
 | --- | --- |
@@ -20,9 +20,15 @@ closed reason. Authority lives in two machine-parsed files; the rest documents t
 - **Public email** — `contact.rows[1]`: the display value and the `mailto:` href, written
   together from a closed `display` + `mailto` proposal. Same three render sites.
 
-Nothing else is writable. Section copy (`src/content/sections`), insights, navigation,
-the street address, the jurisdiction note and the Wellington embassy referral are read-only
-to the agent; each denied operation is documented in `writable-paths.v1.json`.
+- **Text surfaces** — `site_text_patch` over `src/data/site.yaml` and `src/data/sections.yaml`:
+  98 catalogued single-line surfaces (hero, doorways, contact intro, jurisdiction, embassy
+  referral copy, chapter and insights headings, footer identity, and every section's eyebrow, title,
+  lede, timeline entry, statistic, service card and the consul profile). Each surface id carries its
+  file, pointer and meaning in `writable-paths.v1.json`. Hrefs, CTA labels, icons, the phone and
+  email rows and the embassy contact facts are never text targets.
+
+Not writable: markdown section bodies, insights (media-bearing), navigation, opening hours (none
+published). Each denied operation is documented in `writable-paths.v1.json`.
 
 ## Invariants the repository enforces
 
