@@ -70,3 +70,42 @@ footer:
     - "8.5°S 125.7°E · Dili"
     - "36.8°S 174.7°E · Auckland"
   copyrightHolder: "Honorary Consulate of Timor-Leste — Auckland"
+
+# Homepage copy: hero, doorways, chapter heading and the insights heading. Single-line scalars are
+# governed text surfaces (site_text_patch); hrefs and CTA labels are structural and never written.
+hero:
+  eyebrow: "Honorary Consulate · Auckland & North Island"
+  headlineLines:
+  - "Two nations."
+  - "One enduring"
+  - "relationship."
+  lede: "The Honorary Consulate connects Timor-Leste with Auckland and the North Island by supporting Timorese nationals, strengthening cultural ties, and fostering enduring partnerships and economic pathways for New Zealand investors and businesses to engage directly with Timor-Leste's developing sectors and post-ASEAN accession economy."
+  ctas:
+  - label: "Contact the Consulate"
+    href: "#contact"
+  - label: "Consular services"
+    href: "#consular-services"
+  imageCaption: "Dili coast · Timor-Leste"
+doorways:
+  heading: "Begin here"
+  items:
+  - titleLines:
+    - "Assistance for"
+    - "Timorese nationals"
+    body: "Find support, referrals and the right diplomatic contact for your enquiry."
+    action: "View services"
+    href: "#consular-services"
+  - titleLines:
+    - "Trade and"
+    - "investment"
+    body: "Explore thoughtful partnerships between New Zealand experience and Timor-Leste’s next chapter."
+    action: "Explore opportunities"
+    href: "#opportunity"
+chapters:
+  consularServices:
+    eyebrow: "AJUDA / Guidance"
+    heading: "Consular services"
+    intro: "A first point of contact for Timorese nationals, and a bridge between Timor-Leste and communities across Auckland and the North Island."
+insights:
+  eyebrow: "HANOIN / Insights"
+  heading: "Insights"

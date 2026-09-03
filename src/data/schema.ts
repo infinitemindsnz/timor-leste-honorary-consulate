@@ -71,6 +71,21 @@ export const siteSchema = z.strictObject({
     phone: linkFact,
     email: linkFact,
   }),
+  hero: z.strictObject({
+    eyebrow: line,
+    headlineLines: z.array(line).min(1).max(4),
+    lede: line,
+    ctas: z.array(z.strictObject({ label: line, href: line })).min(1).max(3),
+    imageCaption: line,
+  }),
+  doorways: z.strictObject({
+    heading: line,
+    items: z.array(z.strictObject({ titleLines: z.array(line).min(1).max(3), body: line, action: line, href: line })).min(1).max(4),
+  }),
+  chapters: z.strictObject({
+    consularServices: z.strictObject({ eyebrow: line, heading: line, intro: line }),
+  }),
+  insights: z.strictObject({ eyebrow: line, heading: line }),
   footer: z.strictObject({
     eyebrow: line,
     title: line,
@@ -83,3 +98,23 @@ export const siteSchema = z.strictObject({
 });
 
 export type Site = z.infer<typeof siteSchema>;
+
+const ICONS = ["map", "users", "landmark", "coins", "waves", "handshake", "languages", "sprout", "graduation", "briefcase", "heart-handshake", "megaphone", "church"] as const;
+
+/** One governed section record (src/data/sections.yaml), keyed by the section's collection id. */
+export const sectionSchema = z.strictObject({
+  eyebrow: line,
+  title: line,
+  lede: line.optional(),
+  facts: z.array(z.strictObject({ icon: z.enum(ICONS), title: line, text: line })).optional(),
+  timeline: z.array(z.strictObject({ date: line, title: line, text: line })).optional(),
+  stats: z.array(z.strictObject({ value: line, caption: line, asAt: line.optional() })).optional(),
+  services: z.array(z.strictObject({ icon: z.enum(ICONS), title: line, text: line })).optional(),
+  profileHeading: line.optional(),
+  profile: z.array(z.strictObject({ term: line, detail: line })).optional(),
+});
+
+export const sectionsSchema = z.record(z.string().regex(/^[a-z0-9-]+$/), sectionSchema);
+
+export type Section = z.infer<typeof sectionSchema>;
+export type Sections = z.infer<typeof sectionsSchema>;

@@ -17,17 +17,23 @@ import {
   WavesHorizontal,
 } from "@lucide/astro";
 import TaisBand from "./TaisBand.astro";
+import { sections as siteSections } from "../lib/content";
 
 interface Props {
   sections: CollectionEntry<"sections">[];
 }
 
 const { sections } = Astro.props;
+// Every section's copy (eyebrow, title, lede, facts, timeline, stats, services, consul profile)
+// lives in the governed record src/data/sections.yaml, keyed by the section's collection id with
+// "/" replaced by "-". The markdown entry keeps only page, order, pattern, surface and its body.
 const renderedSections = await Promise.all(
-  sections.map(async (section) => ({
-    ...section,
-    Content: (await render(section)).Content,
-  })),
+  sections.map(async (section) => {
+    const key = section.id.replaceAll("/", "-");
+    const copy = siteSections[key];
+    if (copy === undefined) throw new Error(`src/data/sections.yaml has no record for section ${section.id}`);
+    return { ...section, data: { ...section.data, ...copy }, Content: (await render(section)).Content };
+  }),
 );
 
 const isConsulProfile = (id: string) =>
@@ -136,22 +142,14 @@ const iconMap = {
                 class="consul-profile"
                 aria-label="Honorary Consul profile"
               >
-                <p class="consul-profile__label">Profile</p>
+                <p class="consul-profile__label">{section.data.profileHeading}</p>
                 <dl>
-                  <div>
-                    <dt>Role</dt>
-                    <dd>
-                      First Honorary Consul for Auckland and the North Island
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Appointment</dt>
-                    <dd>Five-year voluntary appointment</dd>
-                  </div>
-                  <div>
-                    <dt>Authority</dt>
-                    <dd>Embassy of Timor-Leste in Wellington</dd>
-                  </div>
+                  {section.data.profile?.map((row) => (
+                    <div>
+                      <dt>{row.term}</dt>
+                      <dd>{row.detail}</dd>
+                    </div>
+                  ))}
                 </dl>
                 <a href="#contact">
                   Contact Dave <span aria-hidden="true">→</span>
@@ -194,7 +192,7 @@ const iconMap = {
             <dl class="stat-grid">
               {section.data.stats.map((stat) => (
                 <div>
-                  <dt>{stat.label}</dt>
+                  <dt>{stat.caption}</dt>
                   <dd>{stat.value}</dd>
                   {stat.asAt && <p>{stat.asAt}</p>}
                 </div>

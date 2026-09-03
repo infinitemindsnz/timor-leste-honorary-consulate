@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { articles } = Astro.props;
+import { site } from "../lib/content";
 ---
 
 <section id="insights" class="insights" aria-labelledby="insights-title">
@@ -17,8 +18,8 @@ const { articles } = Astro.props;
   />
   <div class="container insights__inner">
     <header class="insights__heading">
-      <p class="eyebrow">HANOIN / Insights</p>
-      <h2 id="insights-title">Insights</h2>
+      <p class="eyebrow">{site.insights.eyebrow}</p>
+      <h2 id="insights-title">{site.insights.heading}</h2>
       <p>
         Articles and perspectives from the Honorary Consul on Timor-Leste’s
         economy, labour mobility and opportunities for international

@@ -1,6 +1,7 @@
 import { parse } from "yaml";
 import siteYaml from "../data/site.yaml?raw";
-import { siteSchema, type Site } from "../data/schema";
+import sectionsYaml from "../data/sections.yaml?raw";
+import { sectionsSchema, siteSchema, type Sections, type Site } from "../data/schema";
 
 /**
  * Build-time content loader. The YAML is read through Vite's `?raw` import, so it is part of the
@@ -21,3 +22,8 @@ const parsedSite = siteSchema.safeParse(parse(siteYaml));
 if (!parsedSite.success) fail("src/data/site.yaml", parsedSite.error);
 
 export const site: Site = parsedSite.data;
+
+const parsedSections = sectionsSchema.safeParse(parse(sectionsYaml));
+if (!parsedSections.success) fail("src/data/sections.yaml", parsedSections.error);
+
+export const sections: Sections = parsedSections.data;

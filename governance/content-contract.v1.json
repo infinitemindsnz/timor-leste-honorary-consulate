@@ -8,13 +8,15 @@
     "schema": "governance/schemas/site.v1.schema.json",
     "loader": "src/lib/content.ts",
     "buildTimeValidator": "src/data/schema.ts",
-    "comment": "The strict public-facts record: consulate phone and email (the two governed coupled sets), street address, jurisdiction note, Wellington embassy referral and footer identity. Every occurrence of a governed fact on the rendered site derives from this file."
+    "comment": "The strict homepage record: public phone and email (the two governed coupled sets), street address, jurisdiction note, Wellington embassy referral, hero, doorways, chapter/insights headings and footer identity. Every governed fact and every homepage text surface derives from this file."
   },
   "sections": {
-    "glob": "src/content/sections/**/*.md",
-    "format": "markdown+frontmatter",
-    "loader": "src/content.config.ts",
-    "comment": "Per-page section records with a markdown body, Zod-validated by Astro's content layer. Not writable by any declared operation."
+    "path": "src/data/sections.yaml",
+    "format": "yaml",
+    "schema": "governance/schemas/sections.v1.schema.json",
+    "loader": "src/lib/content.ts",
+    "buildTimeValidator": "src/data/schema.ts",
+    "comment": "One record per section (keyed by collection id with / replaced by -): eyebrow, title, lede, timeline, stats, services, consul profile. Governed text surfaces. The markdown files under src/content/sections keep only page/order/pattern/surface and their prose body (human-owned)."
   },
   "insights": {
     "glob": "src/content/insights/**/*.md",
@@ -44,5 +46,11 @@
   },
   "writablePolicy": "governance/writable-paths.v1.json",
   "approvalPolicy": "governance/approval-policy.v1.json",
-  "rendererManifest": "governance/renderer-manifest.v1.json"
+  "rendererManifest": "governance/renderer-manifest.v1.json",
+  "sectionBodies": {
+    "glob": "src/content/sections/**/*.md",
+    "format": "markdown+frontmatter",
+    "loader": "src/content.config.ts",
+    "comment": "Structure (page, order, pattern, surface) plus the prose body. Not writable by any declared operation."
+  }
 }

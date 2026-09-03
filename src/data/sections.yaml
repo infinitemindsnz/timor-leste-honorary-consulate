@@ -1,0 +1,72 @@
+# Governed section copy for the Honorary Consulate website.
+#
+# One record per section of src/content/sections/**, keyed by the section's collection id with
+# "/" replaced by "-" (opportunity/01-asean -> opportunity-01-asean). The markdown file keeps only
+# page, order, pattern, surface and its prose body; every eyebrow, title, lede, timeline entry,
+# statistic, service card and the consul profile renders from here.
+#
+# Validated at build time by src/data/schema.ts (strict: an unknown key fails the build).
+
+consular-services-01-services:
+  eyebrow: "SERVISU / Consular Services"
+  title: "A first point of contact"
+  lede: "Support for Timorese nationals, and a bridge for cultural and commercial relationships."
+  services:
+  - icon: "heart-handshake"
+    title: "Assistance for Timorese nationals"
+    text: "Support, guidance, referrals and community connection for Timorese citizens living in Auckland and the North Island."
+  - icon: "briefcase"
+    title: "Investment facilitation"
+    text: "Introductions and context for New Zealand-based investors exploring opportunities and relationships in Timor-Leste."
+  - icon: "megaphone"
+    title: "Promotion of Timor-Leste"
+    text: "Raising awareness of Timor-Leste’s culture, tourism and economic potential through community and diplomatic engagement."
+  - icon: "handshake"
+    title: "Business and trade introductions"
+    text: "Connecting New Zealand businesses with counterparts across agriculture, hospitality, education, infrastructure and digital sectors."
+consular-services-02-consul:
+  eyebrow: "KÓNSUL / The Consul"
+  title: "Dave Ananth"
+  lede: "The first Honorary Consul for the Democratic Republic of Timor-Leste covering Auckland and the North Island."
+  profileHeading: "Profile"
+  profile:
+  - term: "Role"
+    detail: "First Honorary Consul for Auckland and the North Island"
+  - term: "Appointment"
+    detail: "Five-year voluntary appointment"
+  - term: "Authority"
+    detail: "Embassy of Timor-Leste in Wellington"
+consular-services-03-wellington:
+  eyebrow: "EMBAIXADA / Wellington Embassy"
+  title: "Visas, passports and official documents"
+  lede: "These services are handled by the Embassy of Timor-Leste in Wellington, not the Honorary Consulate."
+opportunity-01-asean:
+  eyebrow: "KAPÍTULU ASEAN / The ASEAN chapter"
+  title: "A historic moment"
+  lede: "ASEAN accession is not the end of a journey. It is the beginning of one."
+  timeline:
+  - date: "2002"
+    title: "Independence restored"
+    text: "The world’s first new sovereign state of the 21st century — a nation reborn after extraordinary struggle."
+  - date: "2011"
+    title: "ASEAN application"
+    text: "Timor-Leste applied for membership, beginning a fourteen-year journey of reform and preparation."
+  - date: "October 2025"
+    title: "Full ASEAN member"
+    text: "Formally admitted at the 47th ASEAN Summit in Kuala Lumpur as the bloc’s 11th member."
+opportunity-02-window:
+  eyebrow: "OPORTUNIDADE / Opportunity"
+  title: "A rare window now open"
+  stats:
+  - value: "US$4.5 Trillion"
+    caption: "ASEAN Regional Economy"
+  - value: "US$18.43 Billion"
+    caption: "Petroleum Fund"
+  - value: "~683 Million+"
+    caption: "ASEAN Consumer Market"
+  - value: "55%+"
+    caption: "Population under 25"
+opportunity-03-sectors:
+  eyebrow: "SETORES / Sectors"
+  title: "Where relationships can grow"
+  lede: "New Zealand capability aligns naturally with several Timorese development priorities."
