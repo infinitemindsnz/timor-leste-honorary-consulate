@@ -10,7 +10,8 @@
     "hero",
     "doorways",
     "chapters",
-    "insights"
+    "insights",
+    "nav"
   ],
   "properties": {
     "brand": {
@@ -475,6 +476,39 @@
           "type": "string",
           "minLength": 1,
           "pattern": "^\\S(?:.*\\S)?$"
+        }
+      }
+    },
+    "nav": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "href"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\S(?:.*\\S)?$"
+              }
+            }
+          }
         }
       }
     }

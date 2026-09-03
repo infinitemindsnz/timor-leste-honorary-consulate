@@ -3,6 +3,10 @@
   "contractId": "timor-leste-honorary-consulate-content.v1",
   "changeLog": [
     {
+      "version": 7,
+      "comment": "PROSE + LABEL SURFACES (contract v1.2). `site_text_patch` gains 6 prose surfaces (each section's markdown body, written whole below a byte-preserved frontmatter, 8 KiB, prose-only markdown) and 6 label surfaces (primary navigation and hero call-to-action words; `href` stays structural). Primary navigation moved from a component constant into src/data/site.yaml#/nav so it is governed like every other copy string. maxTotalValueBytes raised to 32 KiB so one candidate can carry a body rewrite with its heading. No new operation, artifact class or ceremony: the same site_text_patch review shows every body before/after in full."
+    },
+    {
       "version": 6,
       "comment": "TEXT SURFACES (contract v1.1). Adds `site_text_patch` over the two governed data files: src/data/site.yaml (homepage hero, doorways, contact intro, jurisdiction note, embassy referral copy, chapter and insights headings, footer identity) and src/data/sections.yaml (every section's eyebrow, title, lede, timeline entries, statistics, service cards and the consul profile). 98 enumerated single-line surfaces; no patterned page records (`patternedSurfaces: null`). Hrefs, CTA labels, icons, the phone and email rows and the Wellington embassy contact facts stay outside the text grammar. Markdown section bodies remain human-owned."
     },
@@ -273,7 +277,7 @@
     "constraints": {
       "maxSurfacesPerCandidate": 12,
       "maxValueBytes": 2048,
-      "maxTotalValueBytes": 16384,
+      "maxTotalValueBytes": 32768,
       "valueNewlines": "forbidden",
       "scalarStyles": [
         "PLAIN",
@@ -896,9 +900,93 @@
         "reason": "The Wellington embassy contact facts are coupled display/href pairs, not prose."
       },
       {
-        "jsonPointer": "src/data/*.yaml#**/href, **/label, **/icon",
-        "reason": "Structural: destinations, CTA labels and icon names are never free text."
+        "jsonPointer": "src/data/*.yaml#**/href, **/icon",
+        "reason": "Structural: destinations and icon names are never free text."
+      },
+      {
+        "jsonPointer": "src/data/site.yaml#/contact/rows/*/label",
+        "reason": "Contact-row labels name the governed facts beside them; they are identity, not prose. Every OTHER label the site wants editable is enumerated explicitly under labelSurfaces."
       }
-    ]
+    ],
+    "proseSurfaces": {
+      "comment": "PROSE SURFACES (contract v1.2). Each section's markdown body — the paragraphs rendered under its governed eyebrow/title/lede — is one surface whose value replaces the whole body below the frontmatter. The frontmatter (page, order, pattern, surface) is structural and is preserved byte-for-byte by the publisher; a candidate that would change it is refused. Values are markdown PROSE only: paragraphs, emphasis, lists. Markup, links, URLs and images are refused before preview because they would be free-form escape hatches out of the design system.",
+      "constraints": {
+        "maxValueBytes": 8192,
+        "markdown": "prose-only"
+      },
+      "surfaces": [
+        {
+          "surfaceId": "section.consular-services-01-services.body",
+          "file": "src/content/sections/consular-services/01-services.md",
+          "meaning": "Section consular services 01 services › prose (the markdown body below the frontmatter)"
+        },
+        {
+          "surfaceId": "section.consular-services-02-consul.body",
+          "file": "src/content/sections/consular-services/02-consul.md",
+          "meaning": "Section consular services 02 consul › prose (the markdown body below the frontmatter)"
+        },
+        {
+          "surfaceId": "section.consular-services-03-wellington.body",
+          "file": "src/content/sections/consular-services/03-wellington.md",
+          "meaning": "Section consular services 03 wellington › prose (the markdown body below the frontmatter)"
+        },
+        {
+          "surfaceId": "section.opportunity-01-asean.body",
+          "file": "src/content/sections/opportunity/01-asean.md",
+          "meaning": "Section opportunity 01 asean › prose (the markdown body below the frontmatter)"
+        },
+        {
+          "surfaceId": "section.opportunity-02-window.body",
+          "file": "src/content/sections/opportunity/02-window.md",
+          "meaning": "Section opportunity 02 window › prose (the markdown body below the frontmatter)"
+        },
+        {
+          "surfaceId": "section.opportunity-03-sectors.body",
+          "file": "src/content/sections/opportunity/03-sectors.md",
+          "meaning": "Section opportunity 03 sectors › prose (the markdown body below the frontmatter)"
+        }
+      ]
+    },
+    "labelSurfaces": {
+      "comment": "LABEL SURFACES (contract v1.2). The visible words of the primary navigation and the hero calls-to-action. Destinations (`href`) stay structural and are never writable; the contact-row labels (Mobile, Email, Location) are identity assertions bound to the governed facts and stay excluded.",
+      "surfaces": [
+        {
+          "surfaceId": "site.nav.items.0.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/nav/items/0/label",
+          "meaning": "Primary navigation › item 1 label (currently “Trade & Investment”)"
+        },
+        {
+          "surfaceId": "site.nav.items.1.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/nav/items/1/label",
+          "meaning": "Primary navigation › item 2 label (currently “The Consul”)"
+        },
+        {
+          "surfaceId": "site.nav.items.2.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/nav/items/2/label",
+          "meaning": "Primary navigation › item 3 label (currently “Consular Services”)"
+        },
+        {
+          "surfaceId": "site.nav.items.3.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/nav/items/3/label",
+          "meaning": "Primary navigation › item 4 label (currently “Insights”)"
+        },
+        {
+          "surfaceId": "site.hero.ctas.0.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/hero/ctas/0/label",
+          "meaning": "Homepage hero › call-to-action 1 label (currently “Contact the Consulate”)"
+        },
+        {
+          "surfaceId": "site.hero.ctas.1.label",
+          "file": "src/data/site.yaml",
+          "jsonPointer": "/hero/ctas/1/label",
+          "meaning": "Homepage hero › call-to-action 2 label (currently “Consular services”)"
+        }
+      ]
+    }
   }
 }

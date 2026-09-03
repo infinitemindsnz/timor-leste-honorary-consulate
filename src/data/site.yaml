@@ -109,3 +109,16 @@ chapters:
 insights:
   eyebrow: "HANOIN / Insights"
   heading: "Insights"
+
+# Primary navigation labels (governed label surfaces, contract v1.2). Destinations are same-page
+# anchors and stay structural; only the visible words are editable through the publisher.
+nav:
+  items:
+  - label: "Trade & Investment"
+    href: "#opportunity"
+  - label: "The Consul"
+    href: "#consul"
+  - label: "Consular Services"
+    href: "#consular-services"
+  - label: "Insights"
+    href: "#insights"

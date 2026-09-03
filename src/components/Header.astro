@@ -1,10 +1,7 @@
 ---
-const navItems = [
-  { href: "#opportunity", label: "Trade & Investment" },
-  { href: "#consul", label: "The Consul" },
-  { href: "#consular-services", label: "Consular Services" },
-  { href: "#insights", label: "Insights" },
-];
+import { site } from "../lib/content";
+
+const navItems = site.nav.items;
 
 const isHome = Astro.url.pathname === "/";
 const homeHref = (hash: string) => (isHome ? hash : `/${hash}`);
