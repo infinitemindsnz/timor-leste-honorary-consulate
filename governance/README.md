@@ -20,6 +20,8 @@ and refuse everything else with a closed reason. Authority lives in two machine-
 - **Public email** — `contact.rows[1]`: the display value and the `mailto:` href, written
   together from a closed `display` + `mailto` proposal. Same three render sites.
 
+- **Prose surfaces** (v1.2) — the same `site_text_patch` over `src/content/sections/**/*.md`: 6 section bodies, each replaced whole below a byte-preserved frontmatter, prose-only markdown up to 8 KiB.
+- **Label surfaces** (v1.2) — the same operation over `src/data/site.yaml#/nav/items/*/label` and `#/hero/ctas/*/label`: 6 navigation and call-to-action labels. Destinations stay structural.
 - **Text surfaces** — `site_text_patch` over `src/data/site.yaml` and `src/data/sections.yaml`:
   98 catalogued single-line surfaces (hero, doorways, contact intro, jurisdiction, embassy
   referral copy, chapter and insights headings, footer identity, and every section's eyebrow, title,

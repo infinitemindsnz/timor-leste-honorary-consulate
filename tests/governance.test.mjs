@@ -163,3 +163,27 @@ test("every section markdown file has a governed record and carries only structu
     assert.deepEqual(keys.filter((k) => !["page", "order", "pattern", "surface"].includes(k)), [], `${rel} still carries copy in frontmatter`);
   }
 });
+
+test("every prose surface names a frontmatter-led section file whose record exists, and every label surface resolves to a label string away from the governed facts", () => {
+  const text = writable.textPatch;
+  const sections = parseYaml(readFileSync(path.join(root, "src/data/sections.yaml"), "utf8"));
+  assert.equal(text.proseSurfaces.constraints.markdown, "prose-only");
+  assert.ok(text.proseSurfaces.constraints.maxValueBytes <= text.constraints.maxTotalValueBytes);
+  const files = new Set();
+  for (const surface of text.proseSurfaces.surfaces) {
+    assert.match(surface.surfaceId, /^section\.[a-z0-9-]+\.body$/);
+    assert.equal(files.has(surface.file), false, `prose file declared twice: ${surface.file}`); files.add(surface.file);
+    const raw = readFileSync(path.join(root, surface.file), "utf8");
+    assert.ok(raw.startsWith("---\n") && raw.indexOf("\n---\n", 3) > 0, `${surface.file} must open with a closed frontmatter block`);
+    assert.ok(sections[surface.surfaceId.slice("section.".length, -".body".length)], `${surface.file} has no governed record`);
+  }
+  const dir = path.join(root, "src/content/sections");
+  const onDisk = walkFiles(dir, new Set(), dir).filter((name) => name.endsWith(".md")).length;
+  assert.equal(text.proseSurfaces.surfaces.length, onDisk, "every section body is a prose surface");
+  for (const surface of text.labelSurfaces.surfaces) {
+    assert.match(surface.jsonPointer, /\/(label|ctaLabel|linkLabel)$/);
+    assert.equal(/^\/(contact|embassy|meta)\//.test(surface.jsonPointer), false, surface.surfaceId);
+    assert.equal(typeof resolvePointer(site, surface.jsonPointer), "string", surface.surfaceId);
+  }
+  assert.equal(text.labelSurfaces.surfaces.filter((s) => s.jsonPointer.startsWith("/nav/items/")).length, site.nav.items.length, "every navigation label is governed");
+});

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 4,
   "policyId": "timor-leste-honorary-consulate-approval-v1",
-  "comment": "WRITABLE VERSION 1.1. Exactly the three operations governance/writable-paths.v1.json declares (public phone, public email, single-line text surfaces) are bound to an artifact class and one authenticated publication_approval stage. No other operation has a ceremony. Chat text is never an approval surface.",
+  "comment": "WRITABLE VERSION 1.2. Exactly the three operations governance/writable-paths.v1.json declares (public phone, public email, text surfaces — single-line copy, section prose bodies and navigation/CTA labels) are bound to an artifact class and one authenticated publication_approval stage. No other operation has a ceremony. Chat text is never an approval surface.",
   "operations": [
     {
       "operationKind": "public_phone_patch",

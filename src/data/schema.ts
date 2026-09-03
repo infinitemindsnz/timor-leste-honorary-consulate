@@ -71,6 +71,9 @@ export const siteSchema = z.strictObject({
     phone: linkFact,
     email: linkFact,
   }),
+  nav: z.strictObject({
+    items: z.array(z.strictObject({ label: line, href: line })).min(1).max(8),
+  }),
   hero: z.strictObject({
     eyebrow: line,
     headlineLines: z.array(line).min(1).max(4),
