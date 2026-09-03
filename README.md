@@ -27,6 +27,8 @@ npm run dev
 
 ```bash
 npm run lint
+npm run content:validate
+npm run test:governance
 npm run build
 ```
 
@@ -34,6 +36,11 @@ npm run build
 
 Editorial content is stored in `src/content/sections/`. Site-wide design values
 are defined in `src/styles/tokens.css`.
+
+Every public fact (the consulate's phone and email, street address, jurisdiction note
+and the Wellington embassy referral) lives in one governed record, `src/data/site.yaml`,
+validated by the strict schema in `src/data/schema.ts`. Components render those facts
+from the record and never hardcode them.
 
 Visa, passport, and official-document enquiries are directed to the Embassy of
 Timor-Leste in Wellington.
@@ -58,3 +65,10 @@ locally in the ignored `private-backups/` directory and must not be committed.
 
 Before public launch, complete every `TODO(client)` and `TODO(verify)` item,
 and verify all official contact details with the Consulate.
+
+## Governed publication
+
+The Business Agent publisher may change exactly two facts on this site through an
+authenticated approval ceremony: the public phone and the public email, both in
+`src/data/site.yaml`. The contract, the approval policy and the invariants the repository
+enforces are documented in `governance/README.md`.
