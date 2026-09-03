@@ -1,35 +1,268 @@
 {
-  "schemaVersion": 1,
-  "contractId": "timor-leste-honorary-consulate.registration.v1",
-  "default": "deny",
-  "registrationOnly": true,
-  "files": [],
-  "comment": "REGISTRATION-ONLY. This contract lets the Business Agent register the consulate website (name, live URL, read-only) and verify that this exact file is what the pinned commit carries. It grants NO write authority: every proposal against this site is refused before anything durable exists. It becomes a writable contract only through a reviewed version 2 that (1) moves the public facts out of component code into a data file the renderer reads, (2) declares each coupled occurrence set and its materialiser, and (3) is pinned by a deployment whose hosting the publisher can settle.",
+  "schemaVersion": 6,
+  "contractId": "timor-leste-honorary-consulate-content.v1",
+  "changeLog": [
+    {
+      "version": 6,
+      "comment": "WRITABLE VERSION 1 (registration-only contract retired). The consulate's public phone and public email are now single governed facts in src/data/site.yaml, rendered from that one record by the contact section, the footer and the JSON-LD (src/lib/content.ts). This contract declares exactly TWO operations: the closed public_phone_patch coupled set (two pointers, one file) and the schema-v6 public_email_patch (two pointers, one file). It declares NO text-surface, link, typed-page, opening-hours or article operation: section copy lives in markdown frontmatter the text-patch grammar cannot address, navigation is same-page anchors rather than published routes, the site has no typed-page renderer, publishes no opening-hours fact, and its insights are media-bearing PDFs. Each is documented below as denied with its reason, so a proposal for any of them is refused before anything durable exists."
+    }
+  ],
+  "files": [
+    {
+      "path": "src/data/site.yaml",
+      "fields": [
+        {
+          "proposalField": "public_phone",
+          "operationKind": "public_phone_patch",
+          "inputs": [
+            "display",
+            "e164"
+          ],
+          "targets": [
+            {
+              "jsonPointer": "/contact/rows/0/value",
+              "input": "display",
+              "render": "raw",
+              "matchLiteral": "+64 21 021 68888"
+            },
+            {
+              "jsonPointer": "/contact/rows/0/href",
+              "input": "e164",
+              "render": "tel",
+              "matchLiteral": "tel:+642102168888"
+            }
+          ],
+          "writeMode": "atomic",
+          "comment": "The consulate mobile number: one visible display value and one dialable href, both in the Mobile contact row. The contact section, the footer and the JSON-LD `telephone` all render from these two pointers, so this pair IS the complete render-reachable occurrence set. `render: tel` writes the literal `tel:` plus the bare E.164 input; `render: raw` writes the display input verbatim. The Wellington embassy number is a different fact and is not part of this operation."
+        }
+      ]
+    }
+  ],
+  "preconditions": [
+    {
+      "comment": "The two governed pointers address contact rows by index, so a reorder of `contact.rows` would silently retarget the phone policy at the email or location row. Before applying any patch, the publisher MUST assert every pointer/value pair below against the BASE revision and refuse the candidate on any mismatch.",
+      "path": "src/data/site.yaml",
+      "assertions": [
+        {
+          "jsonPointer": "/contact/rows/0/label",
+          "equals": "Mobile"
+        },
+        {
+          "jsonPointer": "/contact/rows/1/label",
+          "equals": "Email"
+        }
+      ]
+    },
+    {
+      "comment": "CLOSED-SET PRECONDITION. Before applying any public_phone_patch the publisher MUST scan EVERY file under the repository root, excluding only the exact paths in `scanExclusions`, for both literals in RAW TEXT, and every occurrence found MUST be accounted for as a declared target (counted in `expectedOccurrences`) or an explicitly declared `nonRenderingOccurrences` entry. An occurrence that is neither refuses the whole candidate: fewer occurrences means a declared target no longer exists (stale policy, must not write blind); more means an undeclared occurrence appeared in the rendered surface. This site keeps the number in exactly one data record, so there are no non-rendering occurrences to declare.",
+      "kind": "closed_set_occurrence_scan",
+      "expectedOccurrences": [
+        {
+          "literal": "+64 21 021 68888",
+          "count": 1,
+          "comment": "The display form: /contact/rows/0/value."
+        },
+        {
+          "literal": "tel:+642102168888",
+          "count": 1,
+          "comment": "The dialable href: /contact/rows/0/href."
+        }
+      ],
+      "totalDeclaredTargets": 2,
+      "nonRenderingOccurrences": [],
+      "nonRenderingOccurrenceRule": "must_be_comment_line",
+      "scanExclusions": [
+        {
+          "path": "node_modules",
+          "reason": "Third-party dependencies, never a renderer-owned public fact source."
+        },
+        {
+          "path": ".git",
+          "reason": "Historical version-control objects legitimately retain prior values."
+        },
+        {
+          "path": "dist",
+          "reason": "Derived build output; governed source bytes are scanned instead."
+        },
+        {
+          "path": ".astro",
+          "reason": "Derived Astro cache."
+        },
+        {
+          "path": ".netlify",
+          "reason": "Legacy hosting cache; never a source."
+        },
+        {
+          "path": "governance",
+          "reason": "Authority documents may quote governed values but do not render."
+        },
+        {
+          "path": "tests",
+          "reason": "Regression fixtures do not render."
+        },
+        {
+          "path": "docs",
+          "reason": "Project briefs and notes do not render."
+        },
+        {
+          "path": "README.md",
+          "reason": "Repository documentation does not render."
+        }
+      ]
+    }
+  ],
+  "inputContracts": {
+    "public_phone": {
+      "comment": "CLOSED, TWO-INPUT CONTRACT. A public_phone_patch proposal supplies exactly `display` and `e164` and nothing else; neither has a default and neither may be derived from the other. The `coupledSet` binds both pointers into one atomic write.",
+      "inputs": {
+        "display": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "comment": "The visible grouping the consulate publishes, written verbatim."
+        },
+        "e164": {
+          "type": "string",
+          "pattern": "^\\+[1-9][0-9]{6,14}$",
+          "comment": "Bare E.164 digits; the materialiser prefixes `tel:` itself."
+        }
+      }
+    }
+  },
   "documentedOperations": [
     {
-      "operationKind": "public_phone_patch",
+      "operationKind": "public_hours_patch",
       "permitted": false,
-      "comment": "The consulate phone (+64 21 021 68888) is rendered from THREE component-code occurrences (src/components/SinglePageContact.astro, src/components/Footer.astro, src/layouts/BaseLayout.astro JSON-LD) plus the Wellington embassy phone in two more. Until those move into one data record with a declared coupled set, no phone operation is safe."
-    },
-    {
-      "operationKind": "public_email_patch",
-      "permitted": false,
-      "comment": "dave.tlconsulhonorario@gmail.com appears in the contact section, the footer, and the JSON-LD; the embassy address in two more places. Same precondition as the phone."
-    },
-    {
-      "operationKind": "public_opening_hours_replace",
-      "permitted": false,
-      "comment": "The site publishes no structured opening-hours record. Manufacturing one is a content decision for the Consulate, not a policy entry."
+      "withdrawalStatus": "never_admitted",
+      "comment": "The withdrawn legacy hours operation. The site publishes no opening-hours statement; nothing here was ever a target for it."
     },
     {
       "operationKind": "site_text_patch",
       "permitted": false,
-      "comment": "Section copy lives in src/content/sections/**/*.md frontmatter and bodies (Zod-validated by src/content.config.ts). A future text-surface catalogue could address frontmatter scalars (title, lede, facts[].text); markdown BODIES and the Tetum eyebrows need their own reviewed grammar."
+      "comment": "Section copy lives in src/content/sections/**/*.md frontmatter and markdown bodies; the text-patch grammar addresses YAML data pointers and a pages-record layout this site does not have. A text-surface catalogue over src/data/site.yaml prose is a reviewed version 2."
+    },
+    {
+      "operationKind": "site_link_patch",
+      "permitted": false,
+      "comment": "Primary navigation is same-page anchors (#opportunity, #consular-services, …), not published routes; the link materialiser resolves internal destinations against published routes only."
+    },
+    {
+      "operationKind": "typed_page_create",
+      "permitted": false,
+      "comment": "The site has no typed-page renderer and no typed-page registry file."
+    },
+    {
+      "operationKind": "public_opening_hours_replace",
+      "permitted": false,
+      "comment": "The site publishes no structured opening-hours record (visits are by appointment). Manufacturing one is a content decision for the Consulate, not a policy entry."
     },
     {
       "operationKind": "article_publish",
       "permitted": false,
-      "comment": "src/content/insights/*.md requires pdfPath, pageCount, readingMinutes and a heroImage — media-bearing by construction. Create-only authored insights need a media-admission contract first."
+      "comment": "src/content/insights/*.md requires a PDF, page count and hero image per record — media-bearing by construction. Authored insights need a media-admission contract first."
     }
-  ]
+  ],
+  "default": "deny",
+  "coupledSet": {
+    "coupledSetId": "public_phone.v1",
+    "proposalField": "public_phone",
+    "operationKind": "public_phone_patch",
+    "writeMode": "atomic_across_files",
+    "paths": [
+      "src/data/site.yaml"
+    ],
+    "totalTargets": 2,
+    "comment": "Both phone pointers live in one file and move together or not at all; the candidate-manifest changed_paths for this operation is exactly [src/data/site.yaml]."
+  },
+  "publicEmailPatch": {
+    "operationKind": "public_email_patch",
+    "proposalField": "public_email",
+    "artifactClass": "public_email_fact",
+    "writeMode": "atomic_across_files",
+    "comment": "The consulate's public email: one visible display value and one mailto href in the Email contact row. The contact section, the footer and the JSON-LD `email` render from these two pointers. The Wellington embassy address is a different fact and is never touched.",
+    "inputs": {
+      "display": {
+        "required": true,
+        "maxBytes": 254,
+        "format": "canonical_bare_email",
+        "derived": false
+      },
+      "mailto": {
+        "required": true,
+        "maxBytes": 254,
+        "format": "canonical_bare_email",
+        "derived": false
+      }
+    },
+    "currentValuePointer": "/contact/rows/1/value",
+    "currentMailtoPointer": "/contact/rows/1/href",
+    "semanticAssertions": [
+      {
+        "jsonPointer": "/contact/rows/1/label",
+        "equals": "Email",
+        "meaning": "visible public email contact row"
+      }
+    ],
+    "scanExclusions": [
+      {
+        "path": "node_modules",
+        "reason": "Third-party dependencies, never a renderer-owned public fact source."
+      },
+      {
+        "path": ".git",
+        "reason": "Historical version-control objects legitimately retain prior values."
+      },
+      {
+        "path": "dist",
+        "reason": "Derived build output; governed source bytes are scanned instead."
+      },
+      {
+        "path": ".astro",
+        "reason": "Derived Astro cache."
+      },
+      {
+        "path": ".netlify",
+        "reason": "Legacy hosting cache; never a source."
+      },
+      {
+        "path": "governance",
+        "reason": "Authority documents may quote governed values but do not render."
+      },
+      {
+        "path": "tests",
+        "reason": "Regression fixtures do not render."
+      },
+      {
+        "path": "docs",
+        "reason": "Project briefs and notes do not render."
+      },
+      {
+        "path": "README.md",
+        "reason": "Repository documentation does not render."
+      }
+    ],
+    "targets": [
+      {
+        "path": "src/data/site.yaml",
+        "pointers": [
+          {
+            "jsonPointer": "/contact/rows/1/value",
+            "input": "display",
+            "render": "raw"
+          },
+          {
+            "jsonPointer": "/contact/rows/1/href",
+            "input": "mailto",
+            "render": "mailto"
+          }
+        ]
+      }
+    ],
+    "allowedSemanticPrefixes": {
+      "src/data/site.yaml": [
+        "/contact/rows/1/value",
+        "/contact/rows/1/href"
+      ]
+    }
+  }
 }

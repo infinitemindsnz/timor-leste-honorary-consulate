@@ -1,0 +1,72 @@
+# Governed content model for the Honorary Consulate website.
+#
+# Every public FACT the site renders (the consulate's mobile number, email address, street
+# address, jurisdiction note, and the Wellington embassy referral) lives here and ONLY here.
+# Components read this file through src/lib/content.ts and MUST NOT hardcode any of these
+# values: a governed change writes one record and every rendered occurrence follows.
+#
+# Do not add the mobile number or the email address anywhere else in this repository outside
+# this file (governance/, docs/ and tests/ are excluded from the scan): the publication
+# contract counts every occurrence and refuses a candidate when one appears it does not know.
+#
+# Validated at build time by src/data/schema.ts (strict: an unknown key fails the build).
+
+brand:
+  name: "Honorary Consulate of the Democratic Republic of Timor-Leste"
+  shortName: "Honorary Consulate of Timor-Leste"
+  region: "Auckland & North Island, New Zealand"
+  areaServed: "Auckland and the North Island of New Zealand"
+
+contact:
+  eyebrow: "KONTAKTU / Contact"
+  heading: "Contact the Consulate"
+  intro: "Contact the Honorary Consulate directly by mobile or email. Visits are available by appointment."
+  # rows[0] is the governed public phone (public_phone_patch), rows[1] the governed public
+  # email (public_email_patch). Their labels are identity assertions in
+  # governance/writable-paths.v1.json: reordering these rows refuses every future patch.
+  rows:
+    - label: "Mobile"
+      value: "+64 21 021 68888"
+      href: "tel:+642102168888"
+    - label: "Email"
+      value: "dave.tlconsulhonorario@gmail.com"
+      href: "mailto:dave.tlconsulhonorario@gmail.com"
+    - label: "Location"
+      value: "97 Great South Road, Epsom, Auckland, New Zealand"
+      href: "https://www.google.com/maps/search/?api=1&query=97+Great+South+Road+Epsom+Auckland+New+Zealand"
+  visitNote: "Visits are by appointment."
+  jurisdiction:
+    eyebrow: "Jurisdiction"
+    heading: "Auckland and the North Island"
+    body: "The Honorary Consulate covers Auckland and the North Island, north of Wellington."
+
+address:
+  streetAddress: "97 Great South Road"
+  addressLocality: "Epsom"
+  addressRegion: "Auckland"
+  addressCountry: "NZ"
+  footerLine: "97 Great South Road, Epsom, Auckland"
+
+embassy:
+  eyebrow: "Wellington Embassy"
+  heading: "Visas, passports and official documents"
+  body: "These services are handled by the Embassy of Timor-Leste in Wellington, not by the Honorary Consulate."
+  referralBody: "Visas, passports and official documents are handled by the Embassy of Timor-Leste in Wellington."
+  footerBody: "Visas, passports and official consular documents"
+  phone:
+    display: "(04) 471 1971"
+    href: "tel:+6444711971"
+  email:
+    display: "embassy.timorleste.nz@gmail.com"
+    href: "mailto:embassy.timorleste.nz@gmail.com"
+
+footer:
+  eyebrow: "Repúblika Demokrátika Timor-Leste"
+  title: "Honorary Consulate of the Democratic Republic of Timor-Leste"
+  region: "Auckland & North Island, New Zealand"
+  contactHeading: "Contact"
+  embassyHeading: "Wellington Embassy"
+  coordinates:
+    - "8.5°S 125.7°E · Dili"
+    - "36.8°S 174.7°E · Auckland"
+  copyrightHolder: "Honorary Consulate of Timor-Leste — Auckland"

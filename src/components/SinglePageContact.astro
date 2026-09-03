@@ -1,51 +1,44 @@
 ---
 import { Mail, MapPin, Phone } from "@lucide/astro";
 import TaisBand from "./TaisBand.astro";
+import { site } from "../lib/content";
+
+// Every public fact below renders from the governed record in src/data/site.yaml.
+const { contact, embassy } = site;
+const [phone, email, location] = contact.rows;
 ---
 
 <section id="contact" class="contact" aria-labelledby="contact-title">
   <div class="container contact__inner">
     <header class="contact__heading">
-      <p class="eyebrow">KONTAKTU / Contact</p>
-      <h2 id="contact-title">Contact the Consulate</h2>
-      <p>
-        Contact the Honorary Consulate directly by mobile or email. Visits are
-        available by appointment.
-      </p>
+      <p class="eyebrow">{contact.eyebrow}</p>
+      <h2 id="contact-title">{contact.heading}</h2>
+      <p>{contact.intro}</p>
     </header>
 
     <div class="contact__details" aria-label="Consulate contact details">
       <article>
         <Phone size={24} stroke-width={1.6} aria-hidden="true" />
-        <p class="eyebrow">Mobile</p>
-        <a href="tel:+642102168888">+64 21 021 68888</a>
+        <p class="eyebrow">{phone.label}</p>
+        <a href={phone.href}>{phone.value}</a>
       </article>
       <article>
         <Mail size={24} stroke-width={1.6} aria-hidden="true" />
-        <p class="eyebrow">Email</p>
-        <a href="mailto:dave.tlconsulhonorario@gmail.com">
-          dave.tlconsulhonorario@gmail.com
-        </a>
+        <p class="eyebrow">{email.label}</p>
+        <a href={email.href}>{email.value}</a>
       </article>
       <article>
         <MapPin size={24} stroke-width={1.6} aria-hidden="true" />
-        <p class="eyebrow">Location</p>
-        <a
-          href="https://www.google.com/maps/search/?api=1&query=97+Great+South+Road+Epsom+Auckland+New+Zealand"
-        >
-          97 Great South Road, Epsom, Auckland, New Zealand
-        </a>
-        <p>Visits are by appointment.</p>
+        <p class="eyebrow">{location.label}</p>
+        <a href={location.href}>{location.value}</a>
+        <p>{contact.visitNote}</p>
       </article>
     </div>
 
     <article class="jurisdiction">
-      <p class="eyebrow">Jurisdiction</p>
-      <h3>Auckland and the North Island</h3>
-      <p>
-        The Honorary Consulate covers Auckland and the North Island, north of
-        Wellington.
-      </p>
+      <p class="eyebrow">{contact.jurisdiction.eyebrow}</p>
+      <h3>{contact.jurisdiction.heading}</h3>
+      <p>{contact.jurisdiction.body}</p>
     </article>
   </div>
 
@@ -58,21 +51,14 @@ import TaisBand from "./TaisBand.astro";
   <aside class="embassy" aria-labelledby="contact-embassy-title">
     <div class="container embassy__inner">
       <header>
-        <p class="eyebrow">Wellington Embassy</p>
-        <h3 id="contact-embassy-title">
-          Visas, passports and official documents
-        </h3>
+        <p class="eyebrow">{embassy.eyebrow}</p>
+        <h3 id="contact-embassy-title">{embassy.heading}</h3>
       </header>
       <div>
-        <p>
-          These services are handled by the Embassy of Timor-Leste in
-          Wellington, not by the Honorary Consulate.
-        </p>
+        <p>{embassy.body}</p>
         <div class="embassy__links">
-          <a href="tel:+6444711971">(04) 471 1971</a>
-          <a href="mailto:embassy.timorleste.nz@gmail.com">
-            embassy.timorleste.nz@gmail.com
-          </a>
+          <a href={embassy.phone.href}>{embassy.phone.display}</a>
+          <a href={embassy.email.href}>{embassy.email.display}</a>
         </div>
       </div>
     </div>

@@ -1,8 +1,23 @@
 {
   "schemaVersion": 4,
   "policyId": "timor-leste-honorary-consulate-approval-v1",
-  "comment": "REGISTRATION-ONLY. No operation is bound to an artifact class or approval stage because no operation is writable (see writable-paths.v1.json). Chat text is never an approval surface. A version 2 adds one entry per enabled operation, exactly as the reference contract does.",
-  "operations": [],
+  "comment": "WRITABLE VERSION 1. Exactly the two operations governance/writable-paths.v1.json declares are bound to an artifact class and one authenticated publication_approval stage. No other operation has a ceremony: an approver can never be asked to sign off a candidate this site cannot materialise. Chat text is never an approval surface.",
+  "operations": [
+    {
+      "operationKind": "public_phone_patch",
+      "artifactClass": "site_block_patch",
+      "requiredApprovalStages": [
+        "publication_approval"
+      ]
+    },
+    {
+      "operationKind": "public_email_patch",
+      "artifactClass": "public_email_fact",
+      "requiredApprovalStages": [
+        "publication_approval"
+      ]
+    }
+  ],
   "decisionSurface": "assistant-platform-authenticated",
   "naturalLanguageApproval": "deny",
   "default": "deny"

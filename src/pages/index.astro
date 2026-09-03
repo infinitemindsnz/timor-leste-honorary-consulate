@@ -5,6 +5,7 @@ import ContentSections from "../components/ContentSections.astro";
 import Insights from "../components/Insights.astro";
 import SinglePageContact from "../components/SinglePageContact.astro";
 import TaisBand from "../components/TaisBand.astro";
+import { site } from "../lib/content";
 
 const allSections = await getCollection("sections");
 const sectionsFor = (page: string) =>
@@ -136,14 +137,11 @@ const insights = (await getCollection("insights")).sort(
 
       <aside class="embassy-referral" aria-labelledby="embassy-title">
         <div>
-          <h2 id="embassy-title">Wellington Embassy</h2>
-          <p>
-            Visas, passports and official documents are handled by the Embassy
-            of Timor-Leste in Wellington.
-          </p>
+          <h2 id="embassy-title">{site.embassy.eyebrow}</h2>
+          <p>{site.embassy.referralBody}</p>
         </div>
-        <a href="tel:+6444711971">
-          Call (04) 471 1971 <span aria-hidden="true">→</span>
+        <a href={site.embassy.phone.href}>
+          Call {site.embassy.phone.display} <span aria-hidden="true">→</span>
         </a>
       </aside>
     </div>

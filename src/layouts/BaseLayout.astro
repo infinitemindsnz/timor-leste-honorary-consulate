@@ -1,6 +1,7 @@
 ---
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import { site } from "../lib/content";
 import "../styles/global.css";
 
 interface Props {
@@ -24,19 +25,22 @@ const fullTitle =
     ? "Honorary Consulate of Timor-Leste · Auckland & North Island"
     : `${title} · Honorary Consulate of Timor-Leste`;
 
+// Structured data renders from the governed record: the phone and email here are the SAME
+// values as the contact section and footer, so one governed change updates every occurrence.
+const [phoneRow, emailRow] = site.contact.rows;
 const governmentOffice = {
   "@context": "https://schema.org",
   "@type": "GovernmentOffice",
-  name: "Honorary Consulate of the Democratic Republic of Timor-Leste",
-  areaServed: "Auckland and the North Island of New Zealand",
-  telephone: "+64 21 021 68888",
-  email: "dave.tlconsulhonorario@gmail.com",
+  name: site.brand.name,
+  areaServed: site.brand.areaServed,
+  telephone: phoneRow.value,
+  email: emailRow.value,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "97 Great South Road",
-    addressLocality: "Epsom",
-    addressRegion: "Auckland",
-    addressCountry: "NZ",
+    streetAddress: site.address.streetAddress,
+    addressLocality: site.address.addressLocality,
+    addressRegion: site.address.addressRegion,
+    addressCountry: site.address.addressCountry,
   },
   url: canonical.origin,
 };

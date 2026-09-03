@@ -1,18 +1,26 @@
 {
-  "schemaVersion": 1,
-  "contractId": "timor-leste-honorary-consulate.registration.v1",
-  "comment": "Names every content source the renderer reads so a publisher outside this repository can learn the shape without executing it. It grants nothing.",
+  "schemaVersion": 2,
+  "contractId": "timor-leste-honorary-consulate-content.v1",
+  "comment": "Names every content source the renderer reads so a publisher outside this repository can learn the shape without executing it. It grants nothing; authority lives in writable-paths.v1.json and approval-policy.v1.json.",
+  "site": {
+    "path": "src/data/site.yaml",
+    "format": "yaml",
+    "schema": "governance/schemas/site.v1.schema.json",
+    "loader": "src/lib/content.ts",
+    "buildTimeValidator": "src/data/schema.ts",
+    "comment": "The strict public-facts record: consulate phone and email (the two governed coupled sets), street address, jurisdiction note, Wellington embassy referral and footer identity. Every occurrence of a governed fact on the rendered site derives from this file."
+  },
   "sections": {
     "glob": "src/content/sections/**/*.md",
     "format": "markdown+frontmatter",
     "loader": "src/content.config.ts",
-    "comment": "Per-page section records (page, order, eyebrow, title, lede, pattern, surface, optional facts/timeline/stats/services) with a markdown body. Frontmatter is Zod-validated by Astro's content layer."
+    "comment": "Per-page section records with a markdown body, Zod-validated by Astro's content layer. Not writable by any declared operation."
   },
   "insights": {
     "glob": "src/content/insights/**/*.md",
     "format": "markdown+frontmatter",
     "loader": "src/content.config.ts",
-    "comment": "Authored publications with a PDF and hero image per record. Media-bearing; not writable by any registration-grade operation."
+    "comment": "Authored publications with a PDF and hero image per record. Media-bearing; not writable."
   },
   "pages": {
     "glob": "src/content/pages/**/*.md",
@@ -20,30 +28,21 @@
     "loader": "src/content.config.ts",
     "comment": "Only home.md today, marked draft: true."
   },
-  "publicFactsInComponentCode": {
-    "paths": [
-      "src/components/SinglePageContact.astro",
-      "src/components/Footer.astro",
-      "src/layouts/BaseLayout.astro",
-      "src/pages/index.astro"
-    ],
-    "comment": "Phone, email, street address, jurisdiction note, and the Wellington embassy details are hard-coded here. They are NOT a content source and are unwritable until moved into one data record."
-  },
   "renderer": {
     "framework": "astro@5 static",
     "styling": "tailwindcss@4 + src/styles/tokens.css",
     "buildCommand": "npm run build",
     "checkCommand": "npm run lint",
+    "contentValidationCommand": "npm run content:validate",
+    "governanceTestCommand": "npm run test:governance",
     "outputDirectory": "dist",
     "site": "https://www.consulatetimorleste.co.nz"
   },
   "hosting": {
-    "kind": "cloudflare_pages",
-    "projectName": "timor-leste-consulate-auckland",
-    "productionBranch": "main",
-    "deployCommand": "npm run deploy:cloudflare",
-    "comment": "Deployed by CLI push of dist/, not by a git integration. The Business Agent publisher cannot settle Cloudflare Pages in its current build; publication requires a Vercel project or a recorded-envelope Cloudflare adapter."
+    "kind": "vercel",
+    "comment": "Publication requires a Vercel project connected to this repository (vercel.json); the publisher proves preview rendering and production settlement only against the Vercel Deployments API. The former Cloudflare Pages CLI deploy (npm run deploy:cloudflare) is retained for manual use but is not a governed publication path."
   },
   "writablePolicy": "governance/writable-paths.v1.json",
-  "approvalPolicy": "governance/approval-policy.v1.json"
+  "approvalPolicy": "governance/approval-policy.v1.json",
+  "rendererManifest": "governance/renderer-manifest.v1.json"
 }

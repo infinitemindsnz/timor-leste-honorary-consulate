@@ -9,7 +9,9 @@
     "deploy:cloudflare": "npm run build && npx --yes wrangler@latest pages deploy dist --project-name timor-leste-consulate-auckland --branch main",
     "preview": "astro preview",
     "lint": "eslint . && astro check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "content:validate": "node scripts/validate-content.mjs",
+    "test:governance": "node --test tests/governance.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -19,7 +21,8 @@
     "@lucide/astro": "^1.28.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",

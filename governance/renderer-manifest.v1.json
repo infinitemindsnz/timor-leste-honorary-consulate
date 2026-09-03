@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "contractId": "timor-leste-honorary-consulate-renderer.v1",
+  "renderer": "astro-static",
+  "packageManager": "npm",
+  "lockfileVersion": 3,
+  "buildCommand": "npm run build",
+  "contentValidationCommand": "npm run content:validate",
+  "outputDirectory": "dist",
+  "staticRootDirectory": "dist",
+  "sourceGlobs": [
+    "astro.config.mjs",
+    "governance/renderer-manifest.v1.json",
+    "package-lock.json",
+    "package.json",
+    "public/**",
+    "src/components/**/*.astro",
+    "src/content.config.ts",
+    "src/data/schema.ts",
+    "src/layouts/**/*.astro",
+    "src/lib/**/*.ts",
+    "src/pages/**/*.astro",
+    "src/styles/**",
+    "tsconfig.json",
+    "vercel.json"
+  ],
+  "excludedFromRendererSources": [
+    {
+      "paths": [
+        "src/data/site.yaml"
+      ],
+      "reason": "Governed content, not renderer source. Bound separately through the candidate manifest's changed_paths and diff digest."
+    },
+    {
+      "paths": [
+        "src/content/**/*.md"
+      ],
+      "reason": "Authored content collections; not a governed write surface in contract version 1."
+    },
+    {
+      "paths": [
+        "governance/**",
+        "tests/**",
+        "docs/**",
+        "README.md"
+      ],
+      "reason": "Authority documents, regression tests and notes contribute no bytes to dist."
+    }
+  ],
+  "publishedRoutes": {
+    "comment": "A single-page site plus one route per insight record.",
+    "routes": [
+      "index.html",
+      "insights/<id>/index.html",
+      "404.html",
+      "sitemap-index.xml",
+      "sitemap-0.xml",
+      "_astro/*"
+    ]
+  }
+}
