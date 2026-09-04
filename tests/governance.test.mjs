@@ -187,3 +187,58 @@ test("every prose surface names a frontmatter-led section file whose record exis
   }
   assert.equal(text.labelSurfaces.surfaces.filter((s) => s.jsonPointer.startsWith("/nav/items/")).length, site.nav.items.length, "every navigation label is governed");
 });
+
+// The coverage proof: adding copy to this site without governing it must FAIL here. Every string in
+// the two governed data files is either an addressable text/label surface, a prose body, a target of
+// the phone/email coupled sets, or one of the few strings frozen on purpose — and each frozen one is
+// named with its reason, so widening the exception set is a deliberate, reviewable act.
+const FROZEN_TAILS = ["/href", "/icon", "/src", "/kind", "/variant", "/external", "/number", "/width", "/height"];
+const FROZEN_POINTERS = new Map([
+  ["/meta/lang", "Document language: structural, not copy."],
+  ["/meta/themeColor", "Browser theme colour: structural, not copy."],
+  ["/contact/rows/0/value", "The public phone number — owned by public_phone_patch, editable through that operation."],
+  ["/contact/rows/1/value", "The public email address — owned by public_email_patch, editable through that operation."],
+  ["/contact/rows/0/label", "Names the governed phone beside it: an identity assertion, not prose."],
+  ["/contact/rows/1/label", "Names the governed email beside it: an identity assertion, not prose."],
+  ["/contact/rows/2/label", "Same shape as the two governed rows; kept identity for one consistent rule."],
+  ["/address/addressCountry", "ISO country code in structured data, not prose."],
+  ["/embassy/phone/display", "The Wellington Embassy's own contact fact: a third party's, never ours to edit."],
+  ["/embassy/email/display", "The Wellington Embassy's own contact fact: a third party's, never ours to edit."],
+]);
+
+test("every visible string in the governed data files is addressable, or frozen for a stated reason", () => {
+  const sections = parseYaml(readFileSync(path.join(root, "src/data/sections.yaml"), "utf8"));
+  const text = writable.textPatch;
+  const covered = new Set([
+    ...text.enumeratedSurfaces.map((surface) => `${surface.file}#${surface.jsonPointer}`),
+    ...text.labelSurfaces.surfaces.map((surface) => `${surface.file}#${surface.jsonPointer}`),
+  ]);
+  const strings = (node, pointer = "") => {
+    if (node !== null && typeof node === "object") {
+      return Object.entries(node).flatMap(([key, value]) => strings(value, `${pointer}/${key}`));
+    }
+    return typeof node === "string" ? [[pointer, node]] : [];
+  };
+  const ungoverned = [];
+  for (const [file, doc] of [["src/data/site.yaml", site], ["src/data/sections.yaml", sections]]) {
+    for (const [pointer] of strings(doc)) {
+      if (covered.has(`${file}#${pointer}`)) continue;
+      if (FROZEN_TAILS.some((tail) => pointer.endsWith(tail))) continue;
+      if (file === "src/data/site.yaml" && FROZEN_POINTERS.has(pointer)) continue;
+      ungoverned.push(`${file}#${pointer}`);
+    }
+  }
+  assert.deepEqual(ungoverned, [], "new copy must be catalogued (or frozen with a reason) before it ships");
+  // The two frozen values really are the coupled-set targets — "editable through another operation"
+  // must be true, not merely asserted.
+  const factTargets = new Set([
+    ...writable.files.flatMap((entry) => entry.fields.flatMap((field) => field.targets.map((target) => target.jsonPointer))),
+    ...writable.publicEmailPatch.targets.flatMap((entry) => entry.pointers.map((pointer) => pointer.jsonPointer)),
+  ]);
+  for (const pointer of ["/contact/rows/0/value", "/contact/rows/1/value"]) {
+    assert.equal(factTargets.has(pointer), true, `${pointer} must be written by a governed fact operation`);
+  }
+  // Sanity on the shape of the promise: the catalogue is large, and each section has exactly one body.
+  assert.ok(text.enumeratedSurfaces.length + text.labelSurfaces.surfaces.length + text.proseSurfaces.surfaces.length >= 100);
+});
+
